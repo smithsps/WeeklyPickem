@@ -1,14 +1,8 @@
-<hr class="my-4">
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to the %{name}!", name: "LoL Esports Weekly Pick'Em" %></h2>
-  <p class="lead">Predict the winner of each game, every week. Challenge your friends and unveil your time machine to your advantage!</p>
-  <hr class="my-4">
-  <p>Create your account today and start playing!</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Create an Account</a>
-  </p>
-</div>
-
-<div class="match-list">
-   <h3>This weeks matches:</h3>
+<div class="container">
+    <h1 class="title">
+      Hello World
+    </h1>
+    <p class="subtitle">
+        My first website with <strong>Bulma</strong>!
+    </p>
 </div>

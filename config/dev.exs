@@ -11,8 +11,10 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../assets", __DIR__)]]
+  watchers: [
+    node: ["node_modules/.bin/webpack-dev-server", "--inline", "--colors", "--hot", "--stdin", "--host", "localhost", "--port", "8080", "--public", "localhost:8080",
+    cd: Path.expand("../assets", __DIR__)
+  ]]
 
 # ## SSL Support
 #
@@ -34,7 +36,7 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 config :weekly_pickem, WeeklyPickemWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg|scss)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/weekly_pickem_web/views/.*(ex)$},
       ~r{lib/weekly_pickem_web/templates/.*(eex)$}

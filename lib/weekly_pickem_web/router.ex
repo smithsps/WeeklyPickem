@@ -19,8 +19,17 @@ defmodule WeeklyPickemWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", WeeklyPickemWeb do
-  #   pipe_through :api
-  # end
+
+  pipeline :graphql do
+    plug WeeklyPickemWeb.Context
+  end
+
+
+  scope "/api" do
+    pipe_through :graphql
+
+    forward "/", Absinthe.Plug,
+      schema: WeeklyPickemWeb.Schema
+  end
+
 end
