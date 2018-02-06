@@ -11,15 +11,8 @@
   </head>
 
   <body>
-  <section class="section">
-    <div class="container">
+    <main id="root" role="main"></main>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div>
     <%= {:safe, js_script_tag() } %>
-  </section>
   </body>
 </html>

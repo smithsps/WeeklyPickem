@@ -23,6 +23,17 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import Hello from './components/Hello';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 
-render(<Hello />, document.getElementById('root'));
+import css from 'css/app.scss';
+
+import Navbar from './components/Navbar';
+
+
+render(
+  <Provider>
+    <Navbar />
+  </Provider>,
+  document.getElementById('root')
+);

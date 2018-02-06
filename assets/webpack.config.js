@@ -86,16 +86,27 @@ module.exports = (env) => {
         },
 
         {
-          test: /\.(css|scss)$/,
+          test: /\.css$/,
           exclude: /node_modules/,
           use: isDev ? [
             "style-loader",
             "css-loader",
             "postcss-loader",
+          ] : ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: ["css-loader", "postcss-loader"]
+          })
+        },
+        {
+          test: /\.scss$/,
+          exclude: /node_modules/,
+          use: isDev ? [
+            "style-loader",
+            { loader: 'css-loader', options: { importLoaders: 1 } },
             "sass-loader"
           ] : ExtractTextPlugin.extract({
             fallback: "style-loader",
-            use: ["css-loader", "postcss-loader", "sass-loader"]
+            use: ["sass-loader"]
           })
         }
       ]
@@ -103,7 +114,7 @@ module.exports = (env) => {
 
     resolve: {
       modules: ["node_modules", __dirname],
-      extensions: [".js", ".json", ".jsx", ".css", ".styl"]
+      extensions: [".js", ".json", ".jsx", ".css", ".scss"]
     },
 
     plugins: isDev ? [
