@@ -44,7 +44,10 @@ module.exports = (env) => {
         {
           test: /\.(jsx?)$/,
           exclude: /node_modules/,
-          loader: "babel-loader"
+          loader: "babel-loader",
+          query: {
+            presets: ["es2016", "react"]
+          }
         },
 
         {
@@ -119,7 +122,7 @@ module.exports = (env) => {
         allChunks: true
       }),
 
-      new webpack.optimize.UglifyJsPlugin({ 
+      new webpack.optimize.UglifyJsPlugin({
         sourceMap: true,
         beautify: false,
         comments: false,

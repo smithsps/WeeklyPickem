@@ -14,13 +14,12 @@
   <section class="section">
     <div class="container">
 
-
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
 
     </div>
-    <%= {:safe, css_link_tag() } %>
+    <%= {:safe, js_script_tag() } %>
   </section>
   </body>
 </html>

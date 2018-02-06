@@ -14,8 +14,6 @@ class Hello extends Component {
         <h2>What am I supposed to do with it?</h2>
         <p>Extend it, build new cool things with it &ndash; whatever the hell you want!</p>
         <hr />
-        <h2> Who are you?</h2>
-        <p>This guy: <a href="https://twitter.com/designingcode">Letmecode</a></p>
       </div>
     );
   }

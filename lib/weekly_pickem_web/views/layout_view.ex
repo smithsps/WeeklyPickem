@@ -13,7 +13,7 @@ defmodule WeeklyPickemWeb.LayoutView do
     if Mix.env == :prod do
       ~s(<link rel="stylesheet" type="text/css" href="/css/app.css" media="screen,projection" />)
     else
-      ""
+      "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://localhost:8080/css/app.css\" />"
     end
   end
 end
