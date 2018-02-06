@@ -12,7 +12,7 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: ["node_modules/.bin/webpack-dev-server", "--inline", "--colors", "--hot", "--stdin", "--host", "localhost", "--port", "8080", "--public", "localhost:8080",
+    node: ["node_modules/.bin/webpack-dev-server", "--inline", "--colors", "--hot", "--stdin", "--host", "localhost", "--port", "8080", "--public", "localhost:4000",
     cd: Path.expand("../assets", __DIR__)
   ]]
 
@@ -54,7 +54,7 @@ config :phoenix, :stacktrace_depth, 20
 config :weekly_pickem, WeeklyPickem.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "idFxkadCtH6Xg5jED996VxoQVZSS2YWW",
+  password: "postgres",
   database: "weekly_pickem_dev",
   hostname: "localhost",
   pool_size: 10
