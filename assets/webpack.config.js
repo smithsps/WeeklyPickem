@@ -121,7 +121,13 @@ module.exports = (env) => {
       new CopyWebpackPlugin([{
         from: "./static",
         to: path.resolve(__dirname, "../priv/static")
-      }])
+      }]),
+
+      new webpack.ContextReplacementPlugin(
+        /graphql-language-service-interface[\/\\]dist/,
+        /\.js$/
+      ),
+
     ] : [
       new CopyWebpackPlugin([{
         from: "./static",

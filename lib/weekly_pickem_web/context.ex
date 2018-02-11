@@ -1,12 +1,13 @@
 defmodule WeeklyPickemWeb.Context do
   @moduledoc false
 
-  @behavior Plug
+  #@behavior Plug
 
   import Plug.Conn
   import Ecto.Query, only: [where: 2]
 
-  alias WeeklyPickemWeb.{Repo, User}
+  alias WeeklyPickem.Repo
+  alias WeeklyPickem.Model.User
 
   def init(opts), do: opts
 
@@ -30,7 +31,6 @@ defmodule WeeklyPickemWeb.Context do
   defp authorize(token) do
     User
     |> where(token: ^token)
-    |> Repo.one
     |> case do
       nil -> {:error, "invalid authorization token"}
       user -> {:ok, user}

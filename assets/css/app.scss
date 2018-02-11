@@ -1,5 +1,13 @@
 
 
-$body-background-color: #222;
+html, body {
+  height: 100%;
+}
 
-@import "node_modules/bulma/bulma";
+#root {
+  height: 100%;
+}
+
+//$body-background-color: #222;
+
+//@import "node_modules/bulma/bulma";

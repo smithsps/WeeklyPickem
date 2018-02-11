@@ -19,6 +19,9 @@ defmodule WeeklyPickemWeb.Router do
     get "/", PageController, :index
   end
 
+  if Mix.env == :dev do
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: WeeklyPickemWeb.Schema
+  end
 
   pipeline :graphql do
     plug WeeklyPickemWeb.Context
@@ -29,7 +32,9 @@ defmodule WeeklyPickemWeb.Router do
     pipe_through :graphql
 
     forward "/", Absinthe.Plug,
-      schema: WeeklyPickemWeb.Schema
+      schema: WeeklyPickemWeb.Schema,
+      interface: :simple,
+      context: %{pubsub: WeeklyPickemWeb.Endpoint}
   end
 
 end

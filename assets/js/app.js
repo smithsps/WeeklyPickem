@@ -16,20 +16,21 @@
 // Import local files
 //
 // Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
 
 
-import React from 'react';
+/*import React from 'react';
 import { render } from 'react-dom';
-import { createStore, combineReducers } from 'redux';
+
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+
 import { Provider } from 'react-redux';
 
-import css from 'css/app.scss';
+
 
 import Navbar from './components/Navbar';
-
 
 render(
   <Provider>
@@ -37,3 +38,22 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+*/
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import GraphiQL from 'graphiql';
+import fetch from 'isomorphic-fetch';
+
+import css from 'css/app.scss';
+import graphiql_css from 'css/graphiql.css';
+
+function graphQLFetcher(graphQLParams) {
+  return fetch(window.location.origin + '/graphiql', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(graphQLParams),
+  }).then(response => response.json());
+}
+
+ReactDOM.render(<GraphiQL fetcher={graphQLFetcher} />, document.getElementById('root'));
