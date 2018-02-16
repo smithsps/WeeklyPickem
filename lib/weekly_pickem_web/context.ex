@@ -31,6 +31,7 @@ defmodule WeeklyPickemWeb.Context do
   defp authorize(token) do
     User
     |> where(token: ^token)
+    |> Repo.one
     |> case do
       nil -> {:error, "invalid authorization token"}
       user -> {:ok, user}

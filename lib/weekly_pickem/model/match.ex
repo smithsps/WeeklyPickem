@@ -1,14 +1,14 @@
 defmodule WeeklyPickem.Model.Match do
   use Ecto.Schema
   import Ecto.Changeset
-  alias WeeklyPickem.Model.Match
 
+  alias WeeklyPickem.Model.Match
 
   schema "matches" do
     field :cutoff, :utc_datetime
     field :time, :utc_datetime
-    field :team0_id, :id
-    field :time1_id, :id
+    field :team_one, :id
+    field :team_two, :id
 
     timestamps()
   end

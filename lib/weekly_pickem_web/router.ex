@@ -27,7 +27,6 @@ defmodule WeeklyPickemWeb.Router do
     plug WeeklyPickemWeb.Context
   end
 
-
   scope "/api" do
     pipe_through :graphql
 

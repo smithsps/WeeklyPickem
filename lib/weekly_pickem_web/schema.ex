@@ -3,17 +3,27 @@ defmodule WeeklyPickemWeb.Schema do
 
   alias WeeklyPickemWeb.Resolvers
 
-
   object :team do
     field :id, non_null(:id)
     field :name, non_null(:string)
+    field :acronym, non_null(:string)
+    field :region, non_null(:string)
   end
 
   query do
     field :all_teams, non_null(list_of(non_null(:team))) do
       resolve &Resolvers.TeamResolver.all_teams/3
     end
+
+    @desc "Login an existing user"
+    field :login_user, :user do
+      arg :email, non_null(:string)
+      arg :password, non_null(:string)
+
+      resolve &Resolvers.UserResolver.login_user/3
+    end
   end
+
 
   object :user do
     field :id, non_null(:string)
@@ -22,6 +32,7 @@ defmodule WeeklyPickemWeb.Schema do
   end
 
   mutation do
+    @desc "Create a new user"
     field :create_user, :user do
       arg :name, non_null(:string)
       arg :email, non_null(:string)

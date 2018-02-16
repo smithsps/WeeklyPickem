@@ -5,13 +5,13 @@ defmodule WeeklyPickem.Repo.Migrations.CreateMatches do
     create table(:matches) do
       add :time, :utc_datetime
       add :cutoff, :utc_datetime
-      add :team0_id, references(:teams, on_delete: :nothing)
-      add :time1_id, references(:teams, on_delete: :nothing)
+      add :team_one, references(:teams, on_delete: :nothing)
+      add :team_two, references(:teams, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:matches, [:team0_id])
-    create index(:matches, [:time1_id])
+    create index(:matches, [:team_one])
+    create index(:matches, [:team_two])
   end
 end

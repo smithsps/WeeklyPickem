@@ -14,7 +14,6 @@ This project is built using the [Phoneix Framework](http://phoenixframework.org/
 - Redux
 - React / ES6
 - SASS
-- 
 
 ### Current list of things done:
 - Stack Working

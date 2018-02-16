@@ -7,7 +7,7 @@ defmodule WeeklyPickem.Model.Pick do
   schema "picks" do
     field :user_id, :id
     field :match_id, :id
-    field :pick_id, :id
+    field :team_id, :id
 
     timestamps()
   end
