@@ -20,34 +20,24 @@
 // import socket from "./socket"
 
 
-/*import React from 'react';
-import { render } from 'react-dom';
-
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-
-import { Provider } from 'react-redux';
-
-
-
-import Navbar from './components/Navbar';
-
-render(
-  <Provider>
-    <Navbar />
-  </Provider>,
-  document.getElementById('root')
-);
-*/
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GraphiQL from 'graphiql';
-import fetch from 'isomorphic-fetch';
+import { BrowserRouter, Route } from 'react-router-dom'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
+
+
 
 import css from 'css/app.scss';
-import graphiql_css from 'css/graphiql.css';
 
+import Navbar from './components/Navbar';
+import Hello from './components/Hello'
+
+
+import fetch from 'isomorphic-fetch';
+import GraphiQL from 'graphiql';
+import graphiql_css from 'css/graphiql.css';
 function graphQLFetcher(graphQLParams) {
   return fetch(window.location.origin + '/api', {
     method: 'post',
@@ -56,4 +46,17 @@ function graphQLFetcher(graphQLParams) {
   }).then(response => response.json());
 }
 
-ReactDOM.render(<GraphiQL fetcher={graphQLFetcher} />, document.getElementById('root'));
+//ReactDOM.render(<GraphiQL fetcher={graphQLFetcher} />, document.getElementById('root'));
+
+ReactDOM.render((
+  <BrowserRouter>
+    <div>
+      <Navbar />
+
+      <Route exact path="/" component={Hello} />
+      <Route path="/graphiql" component={GraphiQL} />
+    </div>
+  </BrowserRouter>
+),
+  document.getElementById('root')
+);
