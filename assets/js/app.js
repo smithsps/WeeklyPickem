@@ -49,7 +49,7 @@ import css from 'css/app.scss';
 import graphiql_css from 'css/graphiql.css';
 
 function graphQLFetcher(graphQLParams) {
-  return fetch(window.location.origin + '/graphiql', {
+  return fetch(window.location.origin + '/api', {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(graphQLParams),

@@ -10,7 +10,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
 
   describe "User Resolver Integrations" do
 
-    test "create user, graphql", context do
+    test "create user", context do
       query = """
       mutation {
         createUser(
@@ -30,43 +30,96 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
       assert json_response(result, 200)["data"]["createUser"]["name"] == "Test User"
     end
 
-    test "login user, graphql", context do
+    test "login user", context do
       {:ok, user} = UserResolver.create_user(nil, @valid_user, nil)
 
       query = """
       {
-        loginUser(
-          email: "test@test.com",
-          password: "test123"
-        ){
-          id,
-          name
+        loginUser(email:"test@test.com", password: "test123") {
+          refreshToken {
+            token
+            expiration
+          }
+          accessToken {
+            token
+          }
+          user {
+            id
+            name
+            email
+          }
         }
       }
       """
 
       result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "loginUser"))
-      assert json_response(result, 200)["data"]["loginUser"]["name"] == user.name
+      refute json_response(result, 200)["data"]["loginUser"]["user"]["name"] == nil
+      assert json_response(result, 200)["data"]["loginUser"]["user"]["name"] == user.name
     end
 
-    test "login user, fail, graphql", context do
-      {:ok, user} = UserResolver.create_user(nil, @valid_user, nil)
+    test "failed login attempt", context do
+      {:ok, _user} = UserResolver.create_user(nil, @valid_user, nil)
 
       query = """
       {
-        loginUser(
-          email: "fail@test.com",
-          password: "test123"
-        ){
-          id,
-          name
+        loginUser(email:"test@test.com", password: "wrong_password") {
+          refreshToken {
+            token
+            expiration
+          }
+          accessToken {
+            token
+          }
+          user {
+            id
+            name
+            email
+          }
         }
       }
       """
 
       result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "loginUser"))
-      refute json_response(result, 200)["data"]["loginUser"]["name"] == user.name
+      refute json_response(result, 200) == nil
+      assert List.first(json_response(result, 200)["errors"])["message"] == "Invalid username or password."
+    end
+
+
+    test "logout", context do
+      {:ok, _user} = UserResolver.create_user(nil, @valid_user, nil)
+      login_query = """
+      {
+        loginUser(email:"test@test.com", password: "test123") {
+          refreshToken {
+            token
+            expiration
+          }
+          accessToken {
+            token
+          }
+          user {
+            id
+            name
+            email
+          }
+        }
+      }
+      """
+      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(login_query, "loginUser"))
+      refresh_token = json_response(result, 200)["data"]["loginUser"]["refreshToken"]["token"]
+      refute refresh_token == nil
+
+
+      query = """
+      {
+        logoutUser(refreshToken: "#{refresh_token}"){
+        	message
+      	}
+      }
+      """
+
+      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "logoutUser"))
+      assert json_response(result, 200)["data"]["logoutUser"]["message"] == "Logout successful."
     end
   end
-
 end

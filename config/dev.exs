@@ -32,6 +32,11 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
+# Secret Token for token generation.
+config :weekly_pickem, WeeklyPickemWeb.Session,
+  token_secret: "zd3I0iarTjuC9UneZ0xOdXNu5Odx2sLvs9CHEdwf8JrDLX6dQqn3NI2BC5Q2pSms2I49HoXIFJIkNEgoT4YVIA=="
+
+
 # Watch static and templates for browser reloading.
 config :weekly_pickem, WeeklyPickemWeb.Endpoint,
   live_reload: [

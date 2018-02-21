@@ -17,9 +17,12 @@ alias WeeklyPickem.Model.Team
 alias WeeklyPickem.Model.Match
 alias WeeklyPickem.Model.Pick
 
-%User{name: "Sam Garvis", email: "sam@garvis.com", password: "notarealpassword"} |> Repo.insert!
-%User{name: "Ben Milks", email: "ben@milks.com", password: "notarealpassword"} |> Repo.insert!
-%User{name: "Dan Dan", email: "dan@dan.com", password: "notarealpassword"} |> Repo.insert!
+# "password"
+fake_password = "$argon2i$v=19$m=65536,t=6,p=1$ZoHzGFWK98QZl3chJeAqgg$jPWznqwlqrV0QPQ+ZfFAqZtAVHEMArb310ntjvV2EsY"
+
+%User{name: "Sam Garvis", email: "sam@garvis.com", password: fake_password} |> Repo.insert!
+%User{name: "Ben Milks", email: "ben@milks.com", password: fake_password} |> Repo.insert!
+%User{name: "Dan Dan", email: "dan@dan.com", password: fake_password} |> Repo.insert!
 
 %Team{name: "Team Solo Mid", acronym: "TSM", region: "NA"} |> Repo.insert!
 %Team{name: "Counter Logic Gaming", acronym: "CLG", region: "NA"} |> Repo.insert!
