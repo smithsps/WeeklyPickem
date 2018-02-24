@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import logo from 'static/logo.png';
 
 class Navbar extends Component {
   render() {
     return(
-      <nav className="navbar is-dark" role="navigation" aria-label="main navigation">
+      <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <a className="navbar-item" href="#">
+          <Link className="navbar-item" to="/">
             <img src={logo} alt="Weekly League Pick'em" height="28"/>
-          </a>
+          </Link>
 
           <button className="button navbar-burger">
             <span></span>
@@ -19,12 +20,12 @@ class Navbar extends Component {
         </div>
         <div className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item">About</a>
+            <Link className="navbar-item" to="/about">About</Link>
           </div>
 
           <div className="navbar-end">
-            <a className="navbar-item">Register</a>
-            <a className="navbar-item">Login</a>
+            <Link className="navbar-item" to="/signup">Register</Link>
+            <Link className="navbar-item" to="/login">Login</Link>
           </div>
         </div>
       </nav>

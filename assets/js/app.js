@@ -27,12 +27,19 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
-
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import css from 'css/app.scss';
 
+import Home from './pages/Home';
+import About from './pages/About';
+import Login from './pages/Login';
+
 import Navbar from './components/Navbar';
-import Hello from './components/Hello'
+import LoginForm from './components/LoginForm';
 
 
 import fetch from 'isomorphic-fetch';
@@ -46,17 +53,29 @@ function graphQLFetcher(graphQLParams) {
   }).then(response => response.json());
 }
 
-//ReactDOM.render(<GraphiQL fetcher={graphQLFetcher} />, document.getElementById('root'));
+
+const httpLink = new HttpLink({ uri: "/api" });
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
+});
 
 ReactDOM.render((
   <BrowserRouter>
-    <div>
-      <Navbar />
+    <ApolloProvider client={client}>
+      <div>
+        <Navbar />
 
-      <Route exact path="/" component={Hello} />
-      <Route path="/graphiql" component={GraphiQL} />
-    </div>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/login" component={Login} />
+
+        <Route path="/graphiql" component={GraphiQL} />
+      </div>
+    </ApolloProvider>
   </BrowserRouter>
+
 ),
   document.getElementById('root')
 );

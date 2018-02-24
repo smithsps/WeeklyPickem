@@ -1,4 +1,5 @@
 
+@import 'mixins';
 
 html, body {
   height: 100%;
@@ -6,9 +7,71 @@ html, body {
 
 #root {
   height: 100%;
+  color: #fff;
 }
 
-$body-background-color: #222;
-//$navbar-background-color: #ceb992;
+//Logo fixing
+nav img {
+  margin-top: 5px;
+}
+
+$dark-grey: #222;
+$gold: #ffd54f;
+
+
+$body-background-color: $dark-grey;
+$navbar-background-color: $dark-grey;
+
+
+$primary: $dark-grey;
+$label-color: #222;
+
+// Home page
+.home-login-signup {
+  margin-top: 2em;
+}
+
+.home-signup {
+  margin: 3em 0 0 2em;
+}
+
+.home-signup .title {
+  margin-bottom: 0.5em !important;
+}
+
+//Navbar
+.navbar-menu a {
+  color: whitesmoke;
+}
+
+.navbar {
+  margin-bottom: 1em;
+}
+
+.navbar-item:hover {
+  background-color: #1a1a1a !important;
+  color: $gold !important;
+}
+
+// Login Form
+.login-form {
+  max-width: 20em !important;
+}
+
+.login-form .title {
+  line-height: 2em;
+}
+
+.login-form .icon svg {
+  fill: #222;
+}
+
+.login-form .input {
+  @include placeholder {
+    color: #666;
+    font-style: italic;
+  }
+}
+
 
 @import "node_modules/bulma/bulma";
