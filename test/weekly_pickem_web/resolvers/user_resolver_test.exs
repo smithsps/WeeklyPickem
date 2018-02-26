@@ -34,7 +34,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
       {:ok, user} = UserResolver.create_user(nil, @valid_user, nil)
 
       query = """
-      {
+      mutation {
         loginUser(email:"test@test.com", password: "test123") {
           refreshToken {
             token
@@ -52,7 +52,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
       }
       """
 
-      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "loginUser"))
+      result = context.conn |> post("/api", AbsintheHelpers.mutation_skeleton(query))
       refute json_response(result, 200)["data"]["loginUser"]["user"]["name"] == nil
       assert json_response(result, 200)["data"]["loginUser"]["user"]["name"] == user.name
     end
@@ -61,7 +61,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
       {:ok, _user} = UserResolver.create_user(nil, @valid_user, nil)
 
       query = """
-      {
+      mutation {
         loginUser(email:"test@test.com", password: "wrong_password") {
           refreshToken {
             token
@@ -79,7 +79,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
       }
       """
 
-      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "loginUser"))
+      result = context.conn |> post("/api", AbsintheHelpers.mutation_skeleton(query))
       refute json_response(result, 200) == nil
       assert List.first(json_response(result, 200)["errors"])["message"] == "Invalid username or password."
     end
@@ -88,7 +88,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
     test "logout", context do
       {:ok, _user} = UserResolver.create_user(nil, @valid_user, nil)
       login_query = """
-      {
+      mutation {
         loginUser(email:"test@test.com", password: "test123") {
           refreshToken {
             token
@@ -105,20 +105,20 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
         }
       }
       """
-      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(login_query, "loginUser"))
+      result = context.conn |> post("/api", AbsintheHelpers.mutation_skeleton(login_query))
       refresh_token = json_response(result, 200)["data"]["loginUser"]["refreshToken"]["token"]
       refute refresh_token == nil
 
 
       query = """
-      {
+      mutation {
         logoutUser(refreshToken: "#{refresh_token}"){
         	message
       	}
       }
       """
 
-      result = context.conn |> post("/api", AbsintheHelpers.query_skeleton(query, "logoutUser"))
+      result = context.conn |> post("/api", AbsintheHelpers.mutation_skeleton(query))
       assert json_response(result, 200)["data"]["logoutUser"]["message"] == "Logout successful."
     end
   end

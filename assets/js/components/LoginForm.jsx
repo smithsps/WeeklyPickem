@@ -12,10 +12,6 @@ class LoginForm extends Component {
     password: ""
   };
 
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
   render() {
     return(
       <div className="container is-fluid login-form">
@@ -44,8 +40,8 @@ class LoginForm extends Component {
               className="input"
               type="password"
               placeholder="Password"
-              value={this.state.email}
-              onChange={e => this.setState({ email: e.target.value })}
+              value={this.state.password}
+              onChange={e => this.setState({ password: e.target.value })}
             />
             <span className="icon is-small is-left">
               <PasswordIcon />
@@ -53,12 +49,11 @@ class LoginForm extends Component {
           </p>
         </div>
 
-
-        <span> GraphQL Status: {this.props.feedQuery && this.props.feedQuery.error} </span>
+        <span> GraphQL Status: {this.props.feedQuery && this.props.feedQuery.error} </span><br/>
 
         <div className="field">
           <p className="control">
-            <button className="button is-link">
+            <button className="button is-link" onClick={() => this._loginUser()}>
               Login
             </button>
           </p>
@@ -68,35 +63,52 @@ class LoginForm extends Component {
   }
 
   _loginUser = async () => {
-    console.log("test");
+    const { email, password } = this.state
+    console.log(this)
 
+    const result = await this.props.loginMutation({
+      variables: {
+        email,
+        password
+      }
+    })
+
+    console.log(result.data)
+
+    const refreshToken = result.data.loginUser.refreshToken.token
+    const accessToken = result.data.loginUser.accessToken.token
+
+    console.log(refreshToken)
+    console.log(accessToken)
+
+    this._saveUserData(refreshToken, accessToken)
   }
 
-
-  _saveUserData = accessToken => {
-    localStorage.setItem(REFRESH_TOKEN, accessToken)
-    localStorage.setItem(ACCESS_TOKEN, accessToken)
+  _saveUserData = (refreshToken, accessToken) => {
+    localStorage.setItem("refresh-token", refreshToken)
+    localStorage.setItem("access-token", accessToken)
   }
 }
 
-const LOGIN_QUERY = gql`
-  query loginUser (
-      $email: String!,
-      $password: String!
-    ) {
-    refreshToken {
-      token
-      expiration
-    }
-    accessToken {
-      token
-    }
-    user {
-      id
-      name
-      email
-    }
+const LOGIN_MUTATION = gql`
+    mutation loginMutation($email: String!, $password: String!) {
+      loginUser(email: $email, password: $password) {
+        refreshToken {
+          token
+          expiration
+        }
+        accessToken {
+          token
+        }
+        user {
+          id
+          name
+          email
+        }
+      }
   }
 `
 
-export default LoginForm;
+export default graphql(LOGIN_MUTATION, { name: 'loginMutation', options: {
+    errorPolicy: 'all'
+  } })(LoginForm)

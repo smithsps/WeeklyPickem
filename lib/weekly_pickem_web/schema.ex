@@ -44,6 +44,9 @@ defmodule WeeklyPickemWeb.Schema do
       resolve &Resolvers.TeamResolver.all_teams/3
     end
 
+  end
+
+  mutation do
     @desc "Login an existing user"
     field :login_user, :login do
       arg :email, non_null(:string)
@@ -66,9 +69,6 @@ defmodule WeeklyPickemWeb.Schema do
       resolve &Resolvers.UserResolver.logout_user/3
     end
 
-  end
-
-  mutation do
     @desc "Create a new user"
     field :create_user, :user do
       arg :name, non_null(:string)
