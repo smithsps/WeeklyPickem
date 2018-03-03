@@ -22,15 +22,18 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route} from 'react-router-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
+import { ApolloLink, from } from 'apollo-link';
+import { onError } from "apollo-link-error";
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+
 
 import css from 'css/app.scss';
 
@@ -39,7 +42,6 @@ import About from './pages/About';
 import Login from './pages/Login';
 
 import Navbar from './components/Navbar';
-import LoginForm from './components/LoginForm';
 
 
 import fetch from 'isomorphic-fetch';
@@ -56,8 +58,30 @@ function graphQLFetcher(graphQLParams) {
 
 const httpLink = new HttpLink({ uri: "/api" });
 
+const authMiddleware = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem("access-token")
+  const authorizationHeader = token ? `Bearer ${token}` : null
+  operation.setContext({
+    headers: {
+      authorization: authorizationHeader
+    }
+  })
+  return forward(operation)
+})
+
+const errorMiddleware = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    )
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+})
+
 const client = new ApolloClient({
-  link: httpLink,
+  link: from([errorMiddleware, authMiddleware, httpLink]),
   cache: new InMemoryCache()
 });
 
@@ -75,7 +99,6 @@ ReactDOM.render((
       </div>
     </ApolloProvider>
   </BrowserRouter>
-
 ),
   document.getElementById('root')
 );

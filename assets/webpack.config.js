@@ -129,6 +129,9 @@ module.exports = (env) => {
         /\.js$/
       ),
 
+      //new webpack.HotModuleReplacementPlugin(),
+      //new webpack.NoEmitOnErrorsPlugin(),
+
     ] : [
       new CopyWebpackPlugin([{
         from: "./static",

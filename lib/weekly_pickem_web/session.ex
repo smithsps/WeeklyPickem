@@ -13,19 +13,20 @@ defmodule WeeklyPickemWeb.Session do
 
 
   def check_token(conn) do
-    with ["Bearer " <> token] <- get_req_header(conn, "Authorization"),
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
       {:ok, current_user} <- authorize(token) do
         %{current_user: current_user}
     else
+
       _ -> %{}
     end
   end
 
-  defp authorize(token) do
-    token
+  defp authorize(auth_token) do
+    _token = auth_token
     |> token
     |> with_signer(hs512(secret()))
-    |> verify
+    |> verify!
   end
 
   defp secret() do

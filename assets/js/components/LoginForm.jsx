@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Redirect from 'react-router';
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -13,8 +14,11 @@ class LoginForm extends Component {
   };
 
   render() {
-    return(
+
+
+    return (
       <div className="container is-fluid login-form">
+        <form>
         <span className="title is-4 has-text-white"> Login </span>
 
         <div className="field">
@@ -49,22 +53,25 @@ class LoginForm extends Component {
           </p>
         </div>
 
-        <span> GraphQL Status: {this.props.feedQuery && this.props.feedQuery.error} </span><br/>
 
         <div className="field">
           <p className="control">
-            <button className="button is-link" onClick={() => this._loginUser()}>
+            <button type="submit" className="button is-link" onClick={e => this._loginUser(e)}>
               Login
             </button>
           </p>
         </div>
+      </form>
       </div>
     );
   }
 
-  _loginUser = async () => {
+  _loginUser = async event => {
+    event.preventDefault();
     const { email, password } = this.state
-    console.log(this)
+
+    // Clear password input field
+    this.setState({ password: "" })
 
     const result = await this.props.loginMutation({
       variables: {
@@ -73,15 +80,12 @@ class LoginForm extends Component {
       }
     })
 
-    console.log(result.data)
+    if (result.data.loginUser) {
+      const refreshToken = result.data.loginUser.refreshToken.token
+      const accessToken = result.data.loginUser.accessToken.token
 
-    const refreshToken = result.data.loginUser.refreshToken.token
-    const accessToken = result.data.loginUser.accessToken.token
-
-    console.log(refreshToken)
-    console.log(accessToken)
-
-    this._saveUserData(refreshToken, accessToken)
+      this._saveUserData(refreshToken, accessToken)
+    }
   }
 
   _saveUserData = (refreshToken, accessToken) => {
@@ -89,6 +93,7 @@ class LoginForm extends Component {
     localStorage.setItem("access-token", accessToken)
   }
 }
+
 
 const LOGIN_MUTATION = gql`
     mutation loginMutation($email: String!, $password: String!) {
@@ -109,6 +114,8 @@ const LOGIN_MUTATION = gql`
   }
 `
 
-export default graphql(LOGIN_MUTATION, { name: 'loginMutation', options: {
-    errorPolicy: 'all'
+export default graphql(LOGIN_MUTATION, {
+  name: "loginMutation",
+  options: {
+    errorPolicy: "all"
   } })(LoginForm)
