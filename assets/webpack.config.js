@@ -13,7 +13,7 @@ const autoprefixer = require("autoprefixer");
  **/
 module.exports = (env) => {
   const isDev = !(env && env.prod);
-  const devtool = isDev ? "eval" : "source-map";
+  const devtool = isDev ? "eval-source-map" : "source-map";
 
   return {
     devtool: devtool,

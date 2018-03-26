@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Redirect from 'react-router';
-import { graphql } from 'react-apollo'
+import { Redirect } from 'react-router';
+import { graphql, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import EmailIcon from 'mdi-react/EmailOutlineIcon';
@@ -14,78 +14,80 @@ class LoginForm extends Component {
   };
 
   render() {
-
-
     return (
-      <div className="container is-fluid login-form">
-        <form>
-        <span className="title is-4 has-text-white"> Login </span>
+      <Mutation mutation={LOGIN_MUTATION} errorPolicy="all">
+        {(loginUser, { error, data, loading }) => {
 
-        <div className="field">
-          <p className="control has-icons-left has-icons-right">
-            <input
-              className="input"
-              type="email"
-              placeholder="Email"
-              value={this.state.email}
-              onChange={e => this.setState({ email: e.target.value })}
-            />
-            <span className="icon is-small is-left">
-              <i className="fas fa-envelope"></i>
-            </span>
-            <span className="icon is-small is-left">
-              <EmailIcon />
-            </span>
-          </p>
-        </div>
-        <div className="field">
-          <p className="control has-icons-left">
-            <input
-              className="input"
-              type="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={e => this.setState({ password: e.target.value })}
-            />
-            <span className="icon is-small is-left">
-              <PasswordIcon />
-            </span>
-          </p>
-        </div>
+          if (data && data.loginUser) {
+            const refreshToken = data.loginUser.refreshToken.token
+            const accessToken = data.loginUser.accessToken.token
 
+            this._saveUserData(refreshToken, accessToken)
 
-        <div className="field">
-          <p className="control">
-            <button type="submit" className="button is-link" onClick={e => this._loginUser(e)}>
-              Login
-            </button>
-          </p>
-        </div>
-      </form>
-      </div>
+            return (<Redirect push to="/about" />)
+          }
+
+          return (
+            <div className="container is-fluid login-form">
+              <form>
+                <span className="title is-4 has-text-white"> Login </span>
+                <div className="field">
+                  <p className="control has-icons-left has-icons-right">
+                    <input
+                      className="input"
+                      type="email"
+                      placeholder="Email"
+                      value={this.state.email}
+                      onChange={e => this.setState({ email: e.target.value })}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fas fa-envelope"></i>
+                    </span>
+                    <span className="icon is-small is-left">
+                      <EmailIcon />
+                    </span>
+                  </p>
+                </div>
+                <div className="field">
+                  <p className="control has-icons-left">
+                    <input
+                      className="input"
+                      type="password"
+                      placeholder="Password"
+                      value={this.state.password}
+                      onChange={e => this.setState({ password: e.target.value })}
+                    />
+                    <span className="icon is-small is-left">
+                      <PasswordIcon />
+                    </span>
+                  </p>
+                </div>
+                { error &&
+                    error.graphQLErrors.map(({ message }, i) => (
+                      <div key={i} className="notification is-danger">{message}</div>
+                    ))
+                }
+
+                <div className="field">
+                  <p className="control">
+                    <button type="submit" className="button is-link"
+                      onClick={e => {
+                        e.preventDefault();
+                        const { email, password } = this.state
+                        loginUser({ variables: { email: email, password: password }})
+                        this.setState({ password: "" })
+                      }
+                    }>
+                      {loading ? '~Loading~' : 'Login'}
+                    </button>
+                  </p>
+                </div>
+              </form>
+            </div>
+          )}
+        }
+      </Mutation>
     );
-  }
-
-  _loginUser = async event => {
-    event.preventDefault();
-    const { email, password } = this.state
-
-    // Clear password input field
-    this.setState({ password: "" })
-
-    const result = await this.props.loginMutation({
-      variables: {
-        email,
-        password
-      }
-    })
-
-    if (result.data.loginUser) {
-      const refreshToken = result.data.loginUser.refreshToken.token
-      const accessToken = result.data.loginUser.accessToken.token
-
-      this._saveUserData(refreshToken, accessToken)
-    }
   }
 
   _saveUserData = (refreshToken, accessToken) => {
@@ -114,8 +116,10 @@ const LOGIN_MUTATION = gql`
   }
 `
 
-export default graphql(LOGIN_MUTATION, {
-  name: "loginMutation",
-  options: {
-    errorPolicy: "all"
-  } })(LoginForm)
+export default LoginForm;
+
+// export default graphql(LOGIN_MUTATION, {
+//   name: "loginMutation",
+//   options: {
+//     errorPolicy: "all"
+//   } })(LoginForm)
