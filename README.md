@@ -6,6 +6,8 @@ A running exmaple is the [NFL Weekly Pickem Website](http://weeklypickem.fantasy
 
 This project is built using the [Phoneix Framework](http://phoenixframework.org/).
 
+![Alt text](screenshot.png?raw=true "Progress Image")
+
 ### Current Stack
 - Phoenix / Elixir
 - PostgreSQL
@@ -17,4 +19,4 @@ This project is built using the [Phoneix Framework](http://phoenixframework.org/
 
 ### Current list of things done:
 - Stack Working
-- User account creation and error reporting through GraphQL
+- User account creation and error reporting 
