@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router';
+import React, { Component } from 'react'
+import { Redirect } from 'react-router'
 import { graphql, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -91,6 +91,8 @@ class LoginForm extends Component {
   }
 
   _saveUserData = (refreshToken, accessToken) => {
+    console.log(refreshToken)
+
     localStorage.setItem("refresh-token", refreshToken)
     localStorage.setItem("access-token", accessToken)
   }
@@ -117,9 +119,3 @@ const LOGIN_MUTATION = gql`
 `
 
 export default LoginForm;
-
-// export default graphql(LOGIN_MUTATION, {
-//   name: "loginMutation",
-//   options: {
-//     errorPolicy: "all"
-//   } })(LoginForm)

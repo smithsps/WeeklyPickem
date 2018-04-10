@@ -74,4 +74,17 @@ $label-color: #222;
 }
 
 
+// Registration Form
+.registration-form form {
+  max-width: 25em !important;
+}
+
+.registration-form .input {
+  @include placeholder {
+    color: #666;
+    font-style: italic;
+  }
+}
+
+
 @import "node_modules/bulma/bulma";

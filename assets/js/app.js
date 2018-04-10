@@ -40,6 +40,7 @@ import css from 'css/app.scss';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
+import Registration from './pages/Registration';
 
 import Navbar from './components/Navbar';
 
@@ -47,6 +48,7 @@ import Navbar from './components/Navbar';
 import fetch from 'isomorphic-fetch';
 import GraphiQL from 'graphiql';
 import graphiql_css from 'css/graphiql.css';
+
 function graphQLFetcher(graphQLParams) {
   return fetch(window.location.origin + '/api', {
     method: 'post',
@@ -94,6 +96,7 @@ ReactDOM.render((
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/login" component={Login} />
+        <Route path="/signup" component={Registration} />
 
         <Route path="/graphiql" component={GraphiQL} />
       </div>

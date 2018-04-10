@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import LoginForm from '../components/LoginForm';
 
@@ -19,9 +20,11 @@ class Home extends Component {
           <LoginForm />
           <div className="home-signup">
             <p id="please" className="title is-4 has-text-white">Don't have an account?</p>
-            <button className="button is-link is-medium">
-              Signup Here
-            </button>
+            <Link to="/signup">
+              <button className="button is-link is-medium">
+                Signup Here
+              </button>
+            </Link>
           </div>
         </div>
       </div>
