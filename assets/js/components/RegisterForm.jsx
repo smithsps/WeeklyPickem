@@ -35,7 +35,7 @@ class RegisterForm extends Component {
                         className="input"
                         type="text"
                         placeholder="Display Name"
-                        value={this.name}
+                        value={this.state.name}
                         onChange={e => this.setState({ name: e.target.value })}
                       />
                       <span className="icon is-small is-left">
@@ -55,7 +55,7 @@ class RegisterForm extends Component {
                         className="input"
                         type="email"
                         placeholder="Email"
-                        value={this.email}
+                        value={this.state.email}
                         onChange={e => this.setState({ email: e.target.value })}
                       />
                       <span className="icon is-small is-left">
@@ -74,7 +74,7 @@ class RegisterForm extends Component {
                         className="input"
                         type="email"
                         placeholder="Email Confirmation"
-                        value={this.emailConfirmation}
+                        value={this.state.emailConfirmation}
                         onChange={e => this.setState({ emailConfirmation: e.target.value })}
                       />
                       <span className="icon is-small is-left">
@@ -94,7 +94,7 @@ class RegisterForm extends Component {
                         className="input"
                         type="password"
                         placeholder="Password"
-                        value={this.password}
+                        value={this.state.password}
                         onChange={e => this.setState({ password: e.target.value })}
                       />
                       <span className="icon is-small is-left">
@@ -110,7 +110,7 @@ class RegisterForm extends Component {
                         className="input"
                         type="password"
                         placeholder="Password Confirmation"
-                        value={this.passwordConfirmation}
+                        value={this.state.passwordConfirmation}
                         onChange={e => this.setState({ passwordConfirmation: e.target.value })}
                       />
                       <span className="icon is-small is-left">
@@ -124,6 +124,8 @@ class RegisterForm extends Component {
                       <div key={i} className="notification is-danger">{message}</div>
                     ))
                   }
+
+                  { data && (<div className="notification is-success">Success! You can now login with your account.</div>)}
 
                   <div className="field is-grouped">
                     <div className="control">
