@@ -20,13 +20,14 @@ class RegisterForm extends Component {
 
     render() {
       return (
-        <Mutation mutation={REGISTER_MUTATION} errorPolicy="all">
-          {(registerMutation, { loading, data, error }) => {
+        <Mutation mutation={CREATE_USER} errorPolicy="all">
+          {(createUser, { loading, data, error }) => {
             
             return (
             <div className="container columns is-fluid registration-form">
               <div className="column is-two-fifths">
                 <form>
+
                   <label className="label has-text-white">Display Name</label>
                   <div className="field">
                     <p className="control has-icons-left has-icons-right">
@@ -45,6 +46,8 @@ class RegisterForm extends Component {
                       </span>
                     </p>
                   </div>
+
+                  <br />
                   <label className="label has-text-white">Email</label>
                   <div className="field">
                     <p className="control has-icons-left has-icons-right">
@@ -63,6 +66,8 @@ class RegisterForm extends Component {
                       </span>
                     </p>
                   </div>
+
+                  <label className="label has-text-white">Email Confirmation</label>
                   <div className="field">
                     <p className="control has-icons-left has-icons-right">
                       <input
@@ -80,6 +85,8 @@ class RegisterForm extends Component {
                       </span>
                     </p>
                   </div>
+
+                  <br />
                   <label className="label has-text-white">Password</label>
                   <div className="field">
                     <p className="control has-icons-left">
@@ -95,6 +102,8 @@ class RegisterForm extends Component {
                       </span>
                     </p>
                   </div>
+
+                  <label className="label has-text-white">Password Confirmation</label>
                   <div className="field">
                     <p className="control has-icons-left">
                       <input
@@ -109,7 +118,7 @@ class RegisterForm extends Component {
                       </span>
                     </p>
                   </div>
-
+                  <br />
                   { error &&
                     error.graphQLErrors.map(({ message }, i) => (
                       <div key={i} className="notification is-danger">{message}</div>
@@ -122,7 +131,7 @@ class RegisterForm extends Component {
                         onClick={e => {
                           e.preventDefault()
                           const { name, email, emailConfirmation, password, passwordConfirmation } = this.state
-                          registerMutation({ 
+                          createUser({ 
                             variables: { 
                               name: name,
                               email: email, 
@@ -156,8 +165,8 @@ class RegisterForm extends Component {
   }
 };
 
-const REGISTER_MUTATION = gql`
-    mutation registerMutation (
+const CREATE_USER = gql`
+    mutation createUser (
       $name: String!,
       $email: String!,
       $emailConfirmation: String!,
@@ -169,8 +178,8 @@ const REGISTER_MUTATION = gql`
         email: $email, 
         emailConfirmation: $emailConfirmation,
         password: $password,
-        passowrdConfirmation: $passwordConfirmation
-      ) {  
+        passwordConfirmation: $passwordConfirmation
+      ) {
         id,
         name
       }

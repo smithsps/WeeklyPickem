@@ -112,12 +112,13 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
   end
 
   defp map_errors_to_list_of_strings(errors) do
-    Enum.flat_map(errors, fn ({_field, error}) ->
-      {msg, opts} = error
-      Enum.reduce(opts, msg, fn {key, value}, acc ->
-        String.replace(acc, "%{#{key}}", to_string(value))
-      end)
-      ["#{msg}"]
+    Enum.flat_map(errors, fn ({field, error}) ->
+      {msg, _opts} = error
+      # Enum.reduce(opts, msg, fn {key, value}, acc ->
+      #   acc = String.replace(acc, "%{#{key}}", "TEST: " <>to_string(value))
+      #   acc
+      # end)
+      ["#{field} #{msg}"]
     end)
   end
 
