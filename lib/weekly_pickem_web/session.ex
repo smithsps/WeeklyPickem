@@ -30,8 +30,7 @@ defmodule WeeklyPickemWeb.Session do
   end
 
   defp secret() do
-    #Application.get_env(:weekly_pickem_web, WeeklyPickemWeb.Session, :token_secret)
-    "zd3I0iarTjuC9UneZ0xOdXNu5Odx2sLvs9CHEdwf8JrDLX6dQqn3NI2BC5Q2pSms2I49HoXIFJIkNEgoT4YVIA=="
+    Application.get_env(:weekly_pickem, :secrets)[:user_token_seed]
   end
 
 

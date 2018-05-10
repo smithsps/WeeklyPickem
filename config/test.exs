@@ -17,3 +17,6 @@ config :weekly_pickem, WeeklyPickem.Repo,
   database: "weekly_pickem_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Also include dev secrets for testing.
+import_config "dev.secret.exs"

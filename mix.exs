@@ -46,7 +46,11 @@ defmodule WeeklyPickem.Mixfile do
       {:absinthe, "~> 1.4.7", override: true},
       {:comeonin, "~> 4.1"},
       {:argon2_elixir, "~> 1.2"},
-      {:joken, "~> 1.5"}
+      {:joken, "~> 1.5"},
+      {:quantum, "~> 2.2"},
+      {:timex, "~> 3.0"},
+      {:httpoison, "~> 1.1"},
+      {:poison, "~> 3.1"}
     ]
   end
 

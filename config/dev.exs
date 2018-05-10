@@ -32,10 +32,6 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
-# Secret Token for token generation.
-config :weekly_pickem, WeeklyPickemWeb.Session,
-  token_secret: "zd3I0iarTjuC9UneZ0xOdXNu5Odx2sLvs9CHEdwf8JrDLX6dQqn3NI2BC5Q2pSms2I49HoXIFJIkNEgoT4YVIA=="
-
 
 # Watch static and templates for browser reloading.
 config :weekly_pickem, WeeklyPickemWeb.Endpoint,
@@ -63,3 +59,11 @@ config :weekly_pickem, WeeklyPickem.Repo,
   database: "weekly_pickem_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configure Scheduler
+config :weekly_pickem, WeeklyPickem.Scheduler,
+  jobs: [
+    {"@daily", {MatchUpdates, :update, []}}
+  ]
+
+import_config "dev.secret.exs"

@@ -12,8 +12,12 @@ defmodule WeeklyPickem.Application do
       supervisor(WeeklyPickem.Repo, []),
       # Start the endpoint when the application starts
       supervisor(WeeklyPickemWeb.Endpoint, []),
+
       # Start your own worker by calling: WeeklyPickem.Worker.start_link(arg1, arg2, arg3)
       # worker(WeeklyPickem.Worker, [arg1, arg2, arg3]),
+
+      # State Quantum Scheduler
+      #worker(WeeklyPickem.Scheduler, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
