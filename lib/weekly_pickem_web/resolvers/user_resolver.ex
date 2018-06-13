@@ -107,8 +107,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
   end
 
   defp secret() do
-    #Application.get_env(:weekly_pickem_web, WeeklyPickemWeb.Session, :token_secret)
-    "zd3I0iarTjuC9UneZ0xOdXNu5Odx2sLvs9CHEdwf8JrDLX6dQqn3NI2BC5Q2pSms2I49HoXIFJIkNEgoT4YVIA=="
+    Application.get_env(:weekly_pickem, :secrets)[:user_tokens]
   end
 
   defp map_errors_to_list_of_strings(errors) do

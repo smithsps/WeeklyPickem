@@ -1,0 +1,3 @@
+    <main class="container" id="root" role="main"></main>
+
+    <%= {:safe, js_script_tag() } %>

@@ -5,10 +5,11 @@ defmodule WeeklyPickem.Model.Match do
   alias WeeklyPickem.Model.Match
 
   schema "matches" do
-    field :cutoff, :utc_datetime
+    field :panda_id, :string
     field :time, :utc_datetime
     field :team_one, :id
     field :team_two, :id
+    field :winner, :id
 
     timestamps()
   end

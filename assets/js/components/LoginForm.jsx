@@ -24,7 +24,7 @@ class LoginForm extends Component {
 
             this._saveUserData(refreshToken, accessToken)
 
-            return (<Redirect push to="/about" />)
+            return (<Redirect push to="/pickem" />)
           }
 
           return (

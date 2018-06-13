@@ -41,6 +41,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
+import Pickem from './pages/Pickem';
 
 import Navbar from './components/Navbar';
 
@@ -97,6 +98,8 @@ ReactDOM.render((
         <Route path="/about" component={About} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Registration} />
+
+        <Route path="/pickem" component={Pickem} />
 
         <Route path="/graphiql" component={GraphiQL} />
       </div>

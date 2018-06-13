@@ -48,9 +48,10 @@ defmodule WeeklyPickem.Mixfile do
       {:argon2_elixir, "~> 1.2"},
       {:joken, "~> 1.5"},
       {:quantum, "~> 2.2"},
-      {:timex, "~> 3.0"},
+      {:timex, "~> 3.3"},
       {:httpoison, "~> 1.1"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:basic_auth, "~> 2.2.2"}
     ]
   end
 
@@ -64,7 +65,7 @@ defmodule WeeklyPickem.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
     ]
   end
 end

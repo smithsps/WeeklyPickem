@@ -6,9 +6,10 @@ defmodule WeeklyPickem.Model.Team do
   #alias WeeklyPickem.Model.Match
 
   schema "teams" do
+    field :panda_id, :string
     field :name, :string
-    field :region, :string
     field :acronym, :string
+    field :league, :string
 
     #has_many :matches, Match
 
@@ -20,9 +21,14 @@ defmodule WeeklyPickem.Model.Team do
     team
     |> cast(attrs, [:name])
     |> validate_required([:name, :region, :acronym])
-    |> validate_inclusion(:region, ["NA", "EU", "KR", "LAN", "LAS", "OCE", "SEA",
-                                    "LMS", "TUR", "JPN", "CN", "BR", "CIS" ],
-                                    message: "Invalid region")
+    # |> validate_inclusion(:region, ["NA", "EU", "KR", "LAN", "LAS", "OCE", "SEA",
+    #                                 "LMS", "TUR", "JPN", "CN", "BR", "CIS" ],
+    #                                 message: "Invalid region")
     |> unique_constraint(:name, message: "Team name already exists")
+  end
+
+
+  def get_all_teams do
+    Team |> WeeklyPickem.Repo.all
   end
 end

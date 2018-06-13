@@ -1,6 +1,7 @@
 defmodule WeeklyPickemWeb.Router do
   use WeeklyPickemWeb, :router
 
+
   pipeline :browser do
     plug :accepts, ["html"]
     #plug :fetch_session
@@ -14,6 +15,10 @@ defmodule WeeklyPickemWeb.Router do
     plug WeeklyPickemWeb.Session
   end
 
+  pipeline :admin_auth do
+    plug BasicAuth, use_config: {:weekly_pickem, :admin_area_config}
+  end
+
   scope "/api" do
     pipe_through :api
 
@@ -21,6 +26,14 @@ defmodule WeeklyPickemWeb.Router do
       schema: WeeklyPickemWeb.Schema,
       interface: :simple,
       context: %{pubsub: WeeklyPickemWeb.Endpoint}
+  end
+
+  scope "/admin" do
+    pipe_through :admin_auth
+
+    get "/", WeeklyPickemWeb.AdminPageController, :index
+    get "/run/team_update", WeeklyPickemWeb.AdminPageController, :team_update
+    get "/run/match_update", WeeklyPickemWeb.AdminPageController, :match_update
   end
 
   scope "/", WeeklyPickemWeb do

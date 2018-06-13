@@ -1,0 +1,7 @@
+<main class="container" id="root" role="main">
+    <h3>Run Services</h3>
+    <ul>
+        <li><a href="/admin/run/team_update">Run Team Update</a></li>
+        <li><a href="/admin/run/match_update">Run Match Update</a></li>
+    </ul>
+</main>
