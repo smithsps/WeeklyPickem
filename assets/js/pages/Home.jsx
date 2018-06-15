@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import LoginForm from '../components/LoginForm';
+import RedirectUser from '../components/RedirectUser';
 
 import lcs_image from 'static/home_image1.jpg';
 
@@ -9,6 +10,8 @@ class Home extends Component {
   render() {
     return(
       <div className="columns">
+        <RedirectUser restrict_to_loggedout="true" />
+        
         <div className="column">
           <figure className="image is-16by9">
             <img src={lcs_image} />
@@ -16,6 +19,7 @@ class Home extends Component {
           <p className="subtitle is-3 has-text-white">Welcome to the</p>
           <p className="title is-1 is-spaced has-text-white">Weekly League Pick'em</p>
         </div>
+
         <div className="column is-one-third home-login-signup">
           <LoginForm />
           <div className="home-signup">

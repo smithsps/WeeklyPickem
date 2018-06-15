@@ -22,7 +22,7 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
   end
 
   def login_user(_root, args, _resolution) do
-    case get_user_by_email(args.email) do
+    case Repo.get_by(User, email: args.email) do
 
       # To help prevent user enumeration, we simulate the time that would be
       # checking a password, even if the user does not exist.
@@ -70,6 +70,16 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
     end
   end
 
+  def current_user(_root, _args, resolution) do
+    with %{context: %{current_user: current_user_id}} <- resolution, 
+         user <- Repo.get_by(User, id: current_user_id)
+    do
+      {:ok, user}
+    else
+      _ -> {:error, "User is not logged in."}
+    end
+  end
+
   defp create_access_token(user_id) do
     new_token = %{user_id: user_id}
     |> token
@@ -100,10 +110,6 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
 
   defp get_refresh_token(refresh_token) do
     Repo.get_by(RefreshToken, token: refresh_token)
-  end
-
-  defp get_user_by_email(email)  do
-    Repo.get_by(User, email: email)
   end
 
   defp secret() do

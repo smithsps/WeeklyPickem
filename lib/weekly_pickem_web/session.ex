@@ -8,16 +8,17 @@ defmodule WeeklyPickemWeb.Session do
 
   def call(conn, _) do
     session = check_token(conn)
-    put_private(conn, :absinthe, %{session: session})
+    #put_private(conn, :absinthe, %{session: session})
+    Absinthe.Plug.put_options(conn, context: session)
   end
 
 
   def check_token(conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-      {:ok, current_user} <- authorize(token) do
-        %{current_user: current_user}
+      {:ok, %{"user_id" => current_user_id}} <- authorize(token) 
+    do
+      %{current_user: current_user_id}
     else
-
       _ -> %{}
     end
   end
@@ -30,7 +31,7 @@ defmodule WeeklyPickemWeb.Session do
   end
 
   defp secret() do
-    Application.get_env(:weekly_pickem, :secrets)[:user_token_seed]
+    Application.get_env(:weekly_pickem, :secrets)[:user_tokens]
   end
 
 

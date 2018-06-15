@@ -44,6 +44,11 @@ defmodule WeeklyPickemWeb.Schema do
       resolve &Resolvers.TeamResolver.all_teams/3
     end
 
+    @desc "Return current user information from access token header"
+    field :current_user, :user do
+      resolve &Resolvers.UserResolver.current_user/3  
+    end
+
   end
 
   mutation do
