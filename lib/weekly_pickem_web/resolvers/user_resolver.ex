@@ -70,7 +70,16 @@ defmodule WeeklyPickemWeb.Resolvers.UserResolver do
     end
   end
 
-  def current_user(_root, _args, resolution) do
+  def current_user_id(_root, _args, resolution) do
+    with %{context: %{current_user: current_user_id}} <- resolution
+    do
+      {:ok, %{id: current_user_id}}
+    else
+      _ -> {:error, "User is not logged in."}
+    end
+  end
+
+  def current_user_profile(_root, _args, resolution) do
     with %{context: %{current_user: current_user_id}} <- resolution, 
          user <- Repo.get_by(User, id: current_user_id)
     do

@@ -17,6 +17,11 @@ defmodule WeeklyPickemWeb.Schema do
     field :email, non_null(:string)
   end
 
+  @desc "User ID Only"
+  object :user_id do
+    field :id, non_null(:string)
+  end
+
   @desc "Access token, used for authenticating API calls"
   object :access_token do
     field :token, non_null(:string)
@@ -44,9 +49,14 @@ defmodule WeeklyPickemWeb.Schema do
       resolve &Resolvers.TeamResolver.all_teams/3
     end
 
-    @desc "Return current user information from access token header"
-    field :current_user, :user do
-      resolve &Resolvers.UserResolver.current_user/3  
+    @desc "Return current user id"
+    field :current_user, :user_id do
+      resolve &Resolvers.UserResolver.current_user_id/3  
+    end
+    
+    @desc "Return current user's profile"
+    field :current_user_profile, :user do
+      resolve &Resolvers.UserResolver.current_user_profile/3  
     end
 
   end

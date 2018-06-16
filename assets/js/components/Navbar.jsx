@@ -36,7 +36,7 @@ class Navbar extends Component {
                   );
                 }
                 
-                if (data && data.currentUser) {
+                if (data && data.currentUser.id) {
                   return (
                     <div className="navbar-end">
                       <Link className="navbar-item" to="/pickem">Your Pick'em</Link>
@@ -73,8 +73,6 @@ const CURRENT_USER_QUERY = gql`
   query CurrentUser {
     currentUser {
       id
-      name
-      email
     }
   }
 `;
