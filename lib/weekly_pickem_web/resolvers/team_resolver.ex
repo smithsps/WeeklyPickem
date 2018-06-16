@@ -1,8 +1,8 @@
 defmodule WeeklyPickemWeb.Resolvers.TeamResolver do
-  alias WeeklyPickem.Model.Query
+  alias WeeklyPickem.Model.Team
 
   def all_teams(_root, _args, _info) do
-    teams = WeeklyPickem.Model.Team.get_all_teams()
+    teams = Team.get_all_teams()
     {:ok, teams}
   end
 

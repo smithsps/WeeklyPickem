@@ -8,6 +8,8 @@ class Pickem extends Component {
     return(
       <div>
         <RedirectUser restrict_to_loggedin="true" />
+        
+        <p className="title is-3 is-spaced has-text-white">Your Pick'em</p>
         <MatchList />
       </div>
     );

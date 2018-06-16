@@ -1,6 +1,8 @@
 defmodule WeeklyPickemWeb.Schema do
   use Absinthe.Schema
 
+  import_types Absinthe.Type.Custom
+
   alias WeeklyPickemWeb.Resolvers
 
   object :team do
@@ -8,6 +10,14 @@ defmodule WeeklyPickemWeb.Schema do
     field :name, non_null(:string)
     field :acronym, non_null(:string)
     field :region, non_null(:string)
+  end
+
+  object :match do
+    field :id, non_null(:id)
+    field :time, non_null(:datetime)
+    field :team_one, non_null(:team)
+    field :team_two, non_null(:team)
+    field :winner, :team
   end
 
   @desc "Simple user object with id, name and email"
@@ -57,6 +67,10 @@ defmodule WeeklyPickemWeb.Schema do
     @desc "Return current user's profile"
     field :current_user_profile, :user do
       resolve &Resolvers.UserResolver.current_user_profile/3  
+    end
+
+    field :all_matches, non_null(list_of(non_null(:match))) do
+      resolve &Resolvers.MatchResolver.all_matches/3
     end
 
   end
