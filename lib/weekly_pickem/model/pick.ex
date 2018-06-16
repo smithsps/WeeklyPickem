@@ -15,7 +15,7 @@ defmodule WeeklyPickem.Model.Pick do
   @doc false
   def changeset(%Pick{} = pick, attrs) do
     pick
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:user_id, :match_id, :team_id])
+    |> validate_required([:user_id, :match_id, :team_id])
   end
 end

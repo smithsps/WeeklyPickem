@@ -18,6 +18,7 @@ defmodule WeeklyPickemWeb.Schema do
     field :team_one, non_null(:team)
     field :team_two, non_null(:team)
     field :winner, :team
+    field :user_pick, :team
   end
 
   @desc "Simple user object with id, name and email"
@@ -25,6 +26,10 @@ defmodule WeeklyPickemWeb.Schema do
     field :id, non_null(:string)
     field :name, non_null(:string)
     field :email, non_null(:string)
+  end
+
+  object :pick do
+    field :message, non_null(:string)
   end
 
   @desc "User ID Only"
@@ -69,7 +74,7 @@ defmodule WeeklyPickemWeb.Schema do
       resolve &Resolvers.UserResolver.current_user_profile/3  
     end
 
-    field :all_matches, non_null(list_of(non_null(:match))) do
+    field :all_matches, list_of(non_null(:match)) do
       resolve &Resolvers.MatchResolver.all_matches/3
     end
 
@@ -107,6 +112,15 @@ defmodule WeeklyPickemWeb.Schema do
       arg :password_confirmation, non_null(:string)
 
       resolve &Resolvers.UserResolver.create_user/3
+    end
+
+    @desc "Submitted User Pick"
+    field :submit_user_pick, :pick do
+      arg :match_id, non_null(:id)
+      arg :team_id, non_null(:id)
+      arg :team_name, :string #Kinda just for debug capability
+
+      resolve &Resolvers.PickResolver.submit_user_pick/3
     end
   end
 

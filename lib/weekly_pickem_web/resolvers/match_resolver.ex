@@ -3,40 +3,62 @@ defmodule WeeklyPickemWeb.Resolvers.MatchResolver do
 
   alias WeeklyPickem.Model.Match
   alias WeeklyPickem.Model.Team
+  alias WeeklyPickem.Model.Pick
 
-  def all_matches(_root, _args, _info) do
-    matches = Match |> WeeklyPickem.Repo.all
+  def all_matches(_root, _args, resolution) do
+    with %{context: %{current_user: current_user_id}} <- resolution
+    do
+      # List of all matches, right now thats only Summer 2018 NA LCS.
+      matches = Match |> WeeklyPickem.Repo.all
 
-    unique_teams = 
-      matches 
-      |> Enum.reduce(MapSet.new, fn(match, acc) -> 
-          acc = MapSet.put(acc, match.team_one)
-          MapSet.put(acc, match.team_two)
-        end)
-      |> MapSet.to_list
-    
-    teams_map = 
-      Team 
-      |> where([t], t.id in ^unique_teams) 
-      |> WeeklyPickem.Repo.all
-      |> Enum.reduce(Map.new, fn(team, acc) ->
-          Map.put_new(acc, team.id, team)
+      # Find all unqiue teams in our list of matches
+      unique_teams = 
+        matches 
+        |> Enum.reduce(MapSet.new, fn(match, acc) -> 
+            acc = MapSet.put(acc, match.team_one)
+            MapSet.put(acc, match.team_two)
           end)
+        |> MapSet.to_list
       
-    IO.inspect teams_map
-    
-    matches =
-      Enum.map(matches, fn(m) -> 
-        %{
-          id: m.id,
-          time: m.time,
-          team_one: Map.get(teams_map, m.team_one),
-          team_two: Map.get(teams_map, m.team_two),
-          winner: Map.get(teams_map, m.winner)
-        } 
-      end)
+      # Get all unqiue team objs and Map team.id to them
+      teams_map = 
+        Team 
+        |> where([t], t.id in ^unique_teams) 
+        |> WeeklyPickem.Repo.all
+        |> Enum.reduce(Map.new, fn(team, acc) ->
+             Map.put_new(acc, team.id, team)
+           end)
+      
+      # Map match_id to current user's picks
+      user_pick_map =
+        Pick
+        |> where([p], p.user_id == ^current_user_id)
+        |> WeeklyPickem.Repo.all
+        |> Enum.reduce(Map.new, fn(pick, acc) ->
+             Map.put_new(acc, pick.match_id, pick)
+           end)
 
-    {:ok, matches}
+      # Combine all of these into a comprehesive data format
+      match_list =
+        Enum.map(matches, fn(m) -> 
+          %{
+            id: m.id,
+            time: m.time,
+            team_one: Map.get(teams_map, m.team_one),
+            team_two: Map.get(teams_map, m.team_two),
+            winner: Map.get(teams_map, m.winner),
+            user_pick: 
+              case Map.get(user_pick_map, m.id) do
+                %Pick{team_id: team_id} -> Map.get(teams_map, team_id)
+                _ -> nil
+              end
+          } 
+        end)
+
+      {:ok, match_list}
+    else
+      _ -> {:error, "User is not logged in."}
+    end
   end
 end
   
