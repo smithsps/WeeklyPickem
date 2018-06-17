@@ -6,7 +6,7 @@ import EmailIcon from 'mdi-react/EmailOutlineIcon';
 import PasswordIcon from 'mdi-react/LockIcon';
 import AccountIcon from 'mdi-react/AccountIcon';
 
-import lcs_image from 'static/home_image3.jpg';
+import lcs_image from 'static/images/home_image3.jpg';
 
 class RegisterForm extends Component {
 

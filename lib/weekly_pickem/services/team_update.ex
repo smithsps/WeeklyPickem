@@ -1,11 +1,10 @@
 defmodule WeeklyPickem.Services.TeamUpdate do
-  use Mix.Task
 
   import WeeklyPickem.Services.PandaScoreAPI
 
   alias WeeklyPickem.Model.Team
 
-  @na_summer_split_series_id "1482"
+  #@na_summer_split_series_id "1482"
 
   def update do
     teams = get_all_na_lol_teams()

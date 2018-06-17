@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import RedirectUser from '../components/RedirectUser';
 
-import lcs_image from 'static/home_image1.jpg';
+import lcs_image from 'static/images/home_image1.jpg';
 
 class Home extends Component {
   render() {

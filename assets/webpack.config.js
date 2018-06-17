@@ -31,7 +31,10 @@ module.exports = (env) => {
     output: {
       path: path.resolve(__dirname, "../priv/static"),
       filename: 'js/[name].js',
-      publicPath: 'http://localhost:8080/'
+      // Full path may be needed for sourcemapping? 
+      // https://stackoverflow.com/questions/28846814/
+      // publicPath: 'http://localhost:4000/'
+      publicPath: '/'
     },
 
     devServer: {

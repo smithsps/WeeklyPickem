@@ -1,6 +1,5 @@
 defmodule WeeklyPickem.Services.MatchUpdate do
-  use Mix.Task
-
+  
   import WeeklyPickem.Services.PandaScoreAPI
 
   alias WeeklyPickem.Model.Match

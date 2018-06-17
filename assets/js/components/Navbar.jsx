@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { graphql, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import logo from 'static/logo.png';
+import logo from 'static/images/logo.png';
 
 class Navbar extends Component {
   render() {
