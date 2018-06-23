@@ -33,5 +33,9 @@ npm-debug.log
 *.idea
 *.lock
 
-#VSCode Settings
+# VSCode Settings
 .vscode
+
+# Release builds
+/target 
+.dockerenv

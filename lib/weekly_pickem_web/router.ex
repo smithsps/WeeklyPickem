@@ -34,6 +34,7 @@ defmodule WeeklyPickemWeb.Router do
     get "/", WeeklyPickemWeb.AdminPageController, :index
     get "/run/team_update", WeeklyPickemWeb.AdminPageController, :team_update
     get "/run/match_update", WeeklyPickemWeb.AdminPageController, :match_update
+    get "/run/run_migrations", WeeklyPickemWeb.AdminPageController, :run_migrations
   end
 
   scope "/", WeeklyPickemWeb do

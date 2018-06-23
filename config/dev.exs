@@ -32,6 +32,7 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
+config :weekly_pickem, :environment, :dev
 
 # Watch static and templates for browser reloading.
 config :weekly_pickem, WeeklyPickemWeb.Endpoint,

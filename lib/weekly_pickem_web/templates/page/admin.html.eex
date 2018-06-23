@@ -3,5 +3,6 @@
     <ul>
         <li><a href="/admin/run/team_update">Run Team Update</a></li>
         <li><a href="/admin/run/match_update">Run Match Update</a></li>
+        <li><a href="admin/run/run_migrations">Run Migrations</a></li>
     </ul>
 </main>
