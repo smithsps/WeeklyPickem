@@ -87,4 +87,11 @@ $label-color: #222;
 }
 
 
+// Match List
+$tabs-boxed-link-hover-background-color: #1a1a1a;
+$tabs-boxed-link-active-background-color: #1a1a1a;
+$tabs-link-active-color: $gold;
+$tabs-link-hover-color: $gold;
+
+
 @import "node_modules/bulma/bulma";

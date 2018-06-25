@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { graphql, Mutation, Query } from 'react-apollo'
+import Moment from 'react-moment'
 import gql from 'graphql-tag'
 
 
@@ -22,11 +23,11 @@ class Match extends Component {
                 ...data,
                 teamOne: {
                     ...data.teamOne, 
-                    isPick: submitUserPick.teamId == data.teamOne.data.id
+                    isPick: submitUserPick.teamId === data.teamOne.data.id
                 },
                 teamTwo: {
                     ...data.teamTwo,
-                    isPick: submitUserPick.teamId == data.teamTwo.data.id
+                    isPick: submitUserPick.teamId === data.teamTwo.data.id
                 }
             }
         })
@@ -86,7 +87,8 @@ class Match extends Component {
 
                 <div className="column has-text-centered">
                     <h3 className="is-size-4">vs</h3>
-                    <p className="is-size-7">{this.props.match.time}</p>
+                    <p className="is-size-7">{<Moment format="dddd, MMMM Do, YYYY">{this.props.match.time}</Moment>}</p>
+                    <p className="is-size-7">{<Moment fromNow>{this.props.match.time}</Moment>}</p>
                 </div>
 
                 <div className="column has-text-centered">
@@ -141,30 +143,66 @@ class Match extends Component {
     }
 }
 
+class MatchTab extends Component {
+    render() {
+        return (
+            <ul className="matchTab">
+                {this.props.matches.map(match => (
+                    <div key={match.id}>
+                        <li >
+                            <Match match={match} />
+                        </li>
+                        <hr/>
+                    </div>
+                ))}
+            </ul>
+        )
+    }
+}
+
 class MatchList extends Component {
 
     state = {
-      matches: []
-    };
+        currentTab: 0
+    }
 
     render() {
         return (
             <Query query={ALL_MATCHES}>
                 {({ loading, error, data }) => {
-                    if (loading) return "Loading...";
+                    if (loading) return <span className="loader"></span>;
                     if (error) return `Error! ${error.message}`;
 
+                    const matches = data.allMatches
+
+                    // Build match groups of group size
+                    const GROUP_SIZE = 10;
+                    const matchTabs = matches.map( (e, i) => {
+                        if (i % GROUP_SIZE === 0) {
+                            return {
+                                id: i / GROUP_SIZE,
+                                tabName: `Week ${i / GROUP_SIZE + 1}`,
+                                matches: matches.slice(i, i + GROUP_SIZE)
+                            }
+                        }
+                        return null
+                    }).filter((item) => {return item})
+
                     return (
-                        <ul className="matchList">
-                            {data.allMatches.map(match => (
-                                <div key={match.id}>
-                                    <li >
-                                        <Match match={match} />
-                                    </li>
-                                    <hr/>
-                                </div>
-                            ))}
-                        </ul>
+                        <div>
+                            <div className="matchList tabs is-boxed">
+                                <ul>
+                                    {matchTabs.map(tab => (
+                                        <li key={tab.id} 
+                                            className={this.state.currentTab === tab.id ? "is-active" : ""}
+                                        >
+                                            <a onClick={e => this.setState({currentTab: tab.id})}>{tab.tabName}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <MatchTab matches={matchTabs[this.state.currentTab].matches}/>
+                        </div>
                     );
                 }}
             </Query>
