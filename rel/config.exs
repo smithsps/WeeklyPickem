@@ -34,10 +34,6 @@ environment :dev do
 end
 
 environment :prod do
-  set commands: [
-    migrate: "rel/commands/migrate.sh"
-  ]
-
   set include_erts: true
   set include_src: false
   set cookie: :"xX1e5b2Dl2NNFR2j7qIYHS5UHytB4IZTGyVlvx8LXTt9jW66FLoycyRQ6VrdBoIoj0zxlGj6830oD3VZQWxeFeqTdlco0adPuwPQnx2yRTMVyGNnIADECPtwfP9rIWm5"
