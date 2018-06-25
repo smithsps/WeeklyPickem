@@ -8,8 +8,6 @@ class Match extends Component {
 
 
     updatePick(cache, submitUserPick) {
-        console.log(submitUserPick)
-
         const data = cache.readFragment({
             id: `Match:${submitUserPick.matchId}`,
             fragment: MatchList.fragments.match,                                    
@@ -34,6 +32,8 @@ class Match extends Component {
     }
 
     render() {
+        var isFinished = (Date.parse(this.props.match.time) - Date.now()) < 0
+
         return (
             <div className="match columns">
             
@@ -65,20 +65,23 @@ class Match extends Component {
                                         </button>
                                     )
                                 } else {
-                                    return (
-                                        <button type="submit" className="button is-link"
-                                                onClick={e => {
-                                                    e.preventDefault();
-                                                    submitPick({ variables: { 
-                                                        teamId: this.props.match.teamOne.data.id, 
-                                                        matchId: this.props.match.id,
-                                                        teamName: this.props.match.teamOne.data.name
-                                                    }})
-                                                }}
-                                            >
-                                            Pick this Team
-                                        </button>
-                                    )
+                                    if (!isFinished) {
+                                        return (
+                                            <button type="submit" className="button is-link"
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                        submitPick({ variables: { 
+                                                            teamId: this.props.match.teamOne.data.id, 
+                                                            matchId: this.props.match.id,
+                                                            teamName: this.props.match.teamOne.data.name
+                                                        }})
+                                                    }}
+                                                >
+                                                Pick this Team
+                                            </button>
+                                        )
+                                    } 
+                                    return null;
                                 }
                             }}
                         </Mutation>
@@ -87,7 +90,7 @@ class Match extends Component {
 
                 <div className="column has-text-centered">
                     <h3 className="is-size-4">vs</h3>
-                    <p className="is-size-7">{<Moment format="dddd, MMMM Do, YYYY">{this.props.match.time}</Moment>}</p>
+                    <p className="is-size-7">{<Moment format="dddd, MMMM Do, h A">{this.props.match.time}</Moment>}</p>
                     <p className="is-size-7">{<Moment fromNow>{this.props.match.time}</Moment>}</p>
                 </div>
 
@@ -119,21 +122,26 @@ class Match extends Component {
                                         </button>
                                     )
                                 } else {
-                                    return (
-                                        <button type="submit" className="button is-link"
-                                                onClick={e => {
-                                                    e.preventDefault();
-                                                    submitPick({ variables: { 
-                                                        teamId: this.props.match.teamTwo.data.id, 
-                                                        matchId: this.props.match.id,
-                                                        teamName: this.props.match.teamTwo.data.name
-                                                    }})
-                                                }}
-                                            >
-                                            Pick this Team
-                                        </button>
-                                    )
+                                    if (!isFinished) {
+                                        return (
+                                            <button type="submit" className="button is-link"
+                                                    onClick={e => {
+                                                        e.preventDefault();
+                                                        submitPick({ variables: { 
+                                                            teamId: this.props.match.teamTwo.data.id, 
+                                                            matchId: this.props.match.id,
+                                                            teamName: this.props.match.teamTwo.data.name
+                                                        }})
+                                                    }}
+                                                >
+                                                Pick this Team
+                                            </button>
+                                        )
+                                    }
+                                    return null;
                                 }
+
+                                return null
                             }}
                         </Mutation>
                     </div>

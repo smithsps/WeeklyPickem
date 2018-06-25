@@ -31,6 +31,8 @@ import { withClientState } from 'apollo-link-state'
 import { onError } from "apollo-link-error"
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import Moment from 'react-moment'
+
 
 import css from 'css/app.scss'
 
@@ -86,6 +88,10 @@ const client = new ApolloClient({
   link: from([errorMiddleware, authMiddleware, httpLink]),
   cache: new InMemoryCache(),
 });
+
+// By default a timer is created for each Moment instance, 
+// we have lots of moment instances, so we don't want that.
+Moment.startPooledTimer();
 
 ReactDOM.render((
   <BrowserRouter>
