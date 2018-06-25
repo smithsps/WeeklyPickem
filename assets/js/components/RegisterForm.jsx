@@ -145,7 +145,7 @@ class RegisterForm extends Component {
                           this.setState({ passwordConfirmation: "" })
                         }
                       }>
-                      {loading ? '~Loading~' : 'Signup'}
+                      {loading ? <span className="loader"></span> : 'Signup'}
                     </button>
                   </div>
                   <div className="control">

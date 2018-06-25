@@ -52,7 +52,7 @@ class Match extends Component {
                                 if (loading) {
                                     return (
                                         <button type="submit" className="button is-link">
-                                            ~Loading~
+                                            <span className="loader"></span>
                                         </button>
                                     )
                                 }
@@ -105,7 +105,7 @@ class Match extends Component {
                                 if (loading) {
                                     return (
                                         <button type="submit" className="button is-link">
-                                            ~Loading~
+                                            <span className="loader"></span>
                                         </button>
                                     )
                                 }

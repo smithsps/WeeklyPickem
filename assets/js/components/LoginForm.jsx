@@ -82,7 +82,7 @@ class LoginForm extends Component {
                         this.setState({ password: "" })
                       }
                     }>
-                      {loading ? '~Loading~' : 'Login'}
+                      {loading ? <span className="loader"></span> : 'Login'}
                     </button>
                   </p>
                 </div>
