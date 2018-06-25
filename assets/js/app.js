@@ -20,46 +20,45 @@
 // import socket from "./socket"
 
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route} from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route} from 'react-router-dom'
 
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink, from } from 'apollo-link';
-import { onError } from "apollo-link-error";
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloProvider } from 'react-apollo'
+import { ApolloClient } from 'apollo-client'
+import { ApolloLink, from } from 'apollo-link'
+import { withClientState } from 'apollo-link-state'
+import { onError } from "apollo-link-error"
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
+import css from 'css/app.scss'
 
-import css from 'css/app.scss';
+import Home from './pages/Home'
+import About from './pages/About'
+import Login from './pages/Login'
+import Registration from './pages/Registration'
+import Pickem from './pages/Pickem'
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Login from './pages/Login';
-import Registration from './pages/Registration';
-import Pickem from './pages/Pickem';
-
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'
 
 
-import fetch from 'isomorphic-fetch';
-import GraphiQL from 'graphiql';
-import graphiql_css from 'css/graphiql.css';
-
-function graphQLFetcher(graphQLParams) {
-  return fetch(window.location.origin + '/api', {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(graphQLParams),
-  }).then(response => response.json());
-}
+import fetch from 'isomorphic-fetch'
+import GraphiQL from 'graphiql'
+import graphiql_css from 'css/graphiql.css'
+import { addTypenameToDocument } from 'apollo-utilities';
 
 
-const httpLink = new HttpLink({ uri: "/api" });
+// function graphQLFetcher(graphQLParams) {
+//   return fetch(window.location.origin + '/api', {
+//     method: 'post',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(graphQLParams),
+//   }).then(response => response.json());
+// }
+
+
+const httpLink = new HttpLink({ uri: "/api" })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem("access-token")
@@ -80,12 +79,12 @@ const errorMiddleware = onError(({ graphQLErrors, networkError }) => {
       ),
     )
 
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
 const client = new ApolloClient({
   link: from([errorMiddleware, authMiddleware, httpLink]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.render((

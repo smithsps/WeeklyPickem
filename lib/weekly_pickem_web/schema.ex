@@ -5,20 +5,26 @@ defmodule WeeklyPickemWeb.Schema do
 
   alias WeeklyPickemWeb.Resolvers
 
-  object :team do
+  object :team_data do
     field :id, non_null(:id)
     field :name, non_null(:string)
     field :acronym, non_null(:string)
     field :region, non_null(:string)
+    field :is_pick, non_null(:boolean)
+    field :is_winner, :boolean
+  end
+
+  object :match_team do
+    field :data, non_null(:team_data)
+    field :is_pick, non_null(:boolean)
+    field :is_winner, :boolean
   end
 
   object :match do
     field :id, non_null(:id)
     field :time, non_null(:datetime)
-    field :team_one, non_null(:team)
-    field :team_two, non_null(:team)
-    field :winner, :team
-    field :user_pick, :team
+    field :team_one, non_null(:match_team)
+    field :team_two, non_null(:match_team)
   end
 
   @desc "Simple user object with id, name and email"
@@ -29,7 +35,8 @@ defmodule WeeklyPickemWeb.Schema do
   end
 
   object :pick do
-    field :message, non_null(:string)
+    field :team_id, non_null(:id)
+    field :match_id, non_null(:id)
   end
 
   @desc "User ID Only"
@@ -60,7 +67,7 @@ defmodule WeeklyPickemWeb.Schema do
   end
 
   query do
-    field :all_teams, non_null(list_of(non_null(:team))) do
+    field :all_teams, list_of(non_null(:team_data)) do
       resolve &Resolvers.TeamResolver.all_teams/3
     end
 

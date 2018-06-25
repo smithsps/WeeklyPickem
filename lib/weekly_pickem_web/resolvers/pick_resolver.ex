@@ -15,8 +15,7 @@ defmodule WeeklyPickemWeb.Resolvers.PickResolver do
         if true do
           
           result = 
-            case WeeklyPickem.Repo.get_by(
-              Pick, 
+            case WeeklyPickem.Repo.get_by(Pick, 
               %{user_id: current_user_id, match_id: match.id}
             )
             do
@@ -31,7 +30,7 @@ defmodule WeeklyPickemWeb.Resolvers.PickResolver do
             |> WeeklyPickem.Repo.insert_or_update
 
           case result do
-            {:ok, _struct} -> {:ok, %{message: "Success able to record match pick."}}
+            {:ok, pick} -> {:ok, %{team_id: pick.team_id, match_id: pick.match_id}}
             {:error, _changeset} -> {:error, "Error while placing pick into database ;-;"}
           end
 

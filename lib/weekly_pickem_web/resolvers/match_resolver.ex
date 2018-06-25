@@ -40,18 +40,31 @@ defmodule WeeklyPickemWeb.Resolvers.MatchResolver do
 
       # Combine all of these into a comprehesive data format
       match_list =
-        Enum.map(matches, fn(m) -> 
+        Enum.map(matches, fn(m) ->
+          
+          user_pick =
+            case Map.get(user_pick_map, m.id) do
+              %Pick{team_id: team_id} -> team_id
+              _ -> nil
+            end
+
+          team_one = %{
+            data: Map.from_struct(Map.get(teams_map, m.team_one)),
+            is_winner: m.winner == m.team_one,
+            is_pick: user_pick == m.team_one
+          }
+          
+          team_two = %{
+            data: Map.from_struct(Map.get(teams_map, m.team_two)),
+            is_winner: m.winner == m.team_two,
+            is_pick: user_pick == m.team_two
+          }
+          
           %{
             id: m.id,
             time: m.time,
-            team_one: Map.get(teams_map, m.team_one),
-            team_two: Map.get(teams_map, m.team_two),
-            winner: Map.get(teams_map, m.winner),
-            user_pick: 
-              case Map.get(user_pick_map, m.id) do
-                %Pick{team_id: team_id} -> Map.get(teams_map, team_id)
-                _ -> nil
-              end
+            team_one: team_one,
+            team_two: team_two,
           } 
         end)
 

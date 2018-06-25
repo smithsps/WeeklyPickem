@@ -20,24 +20,12 @@ defmodule WeeklyPickemWeb.AdminPageController do
   end
 
   def run_migrations(conn, _params) do
-    IO.inspect(migrations_path(WeeklyPickem.Repo))
     Ecto.Migrator.run(WeeklyPickem.Repo, migrations_path(WeeklyPickem.Repo), :up, all: true)
     text conn, "Success: Ran ecto migrator!"
   end
 
 
-  # Migration methods
-  defp repos, do: Application.get_env(WeeklyPickem, :ecto_repos, [])
-
-  defp migrate, do: Enum.each(repos(), &run_migrations_for/1)
-
   defp priv_dir(app), do: "#{:code.priv_dir(app)}"
-
-  defp run_migrations_for(repo) do
-    app = Keyword.get(repo.config, :otp_app)
-    IO.puts "Running migrations for #{app}"
-    
-  end
 
   defp migrations_path(repo), do: priv_path_for(repo, "migrations")
 
