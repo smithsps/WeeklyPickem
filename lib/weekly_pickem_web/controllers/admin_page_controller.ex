@@ -15,7 +15,7 @@ defmodule WeeklyPickemWeb.AdminPageController do
   end
 
   def match_update(conn, _params) do
-    WeeklyPickem.Services.MatchUpdate.update()
+    WeeklyPickem.Services.MatchUpdate.get_all_matches()
     text conn, "Success: Ran Match Update Service!"
   end
 

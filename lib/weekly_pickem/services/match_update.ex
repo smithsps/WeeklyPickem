@@ -1,5 +1,6 @@
 defmodule WeeklyPickem.Services.MatchUpdate do
-  
+  import Ecto.Query
+
   import WeeklyPickem.Services.PandaScoreAPI
 
   alias WeeklyPickem.Model.Match
@@ -26,7 +27,40 @@ defmodule WeeklyPickem.Services.MatchUpdate do
   #   |> execute
   # end
 
-  def update do
+  def update_all_old_matches do 
+    now = Ecto.DateTime.utc()
+    old_matches = 
+      WeeklyPickem.Repo.all (
+        from m in "matches",
+          where: ^now > m.time and is_nil(m.winner),
+          select: m.id
+      )
+    
+    Enum.each old_matches, fn id -> 
+      update_match(id)
+    end
+  end
+
+  def update_match(id) do
+    with match = WeeklyPickem.Repo.get!(Match, id),
+         updated_match = get_match_from_panda(match.panda_id),
+         panda_id = Integer.to_string(updated_match["winner"]["id"]),
+         winner = WeeklyPickem.Repo.get_by!(Team, panda_id: panda_id)
+    do
+      if winner != nil do
+        match
+        |> Match.changeset(%{winner: winner.id})
+        |> WeeklyPickem.Repo.update! 
+      end
+    end
+  end
+
+  defp get_match_from_panda(panda_id) do
+    new_request("/matches/" <> panda_id)
+    |> execute
+  end
+
+  def get_all_matches do
     matches = get_na_summer_split_matches()
 
     # Eventually do something like this to query teams that we don't know.
@@ -43,9 +77,12 @@ defmodule WeeklyPickem.Services.MatchUpdate do
     #   |> MapSet.to_list
 
     # Map panda_team_id to our internal team_id
-    team_reverse_map =
+    team_reverse_map = 
       Enum.reduce Team.get_all_teams, Map.new, fn team, map ->
-        Map.put(map, team.panda_id, team.id)
+        case team.panda_id do
+          nil -> map
+          panda_id -> Map.put(map, panda_id, team.id)
+        end
       end
 
 
@@ -54,14 +91,18 @@ defmodule WeeklyPickem.Services.MatchUpdate do
       team_one_id = Enum.at(match_data["opponents"], 0)["id"]
       team_two_id = Enum.at(match_data["opponents"], 1)["id"]
 
-      winner = match_data["winner"]["id"]
+      winner = 
+        case match_data["winner"]["id"] do
+          nil -> nil
+          id -> Map.get(team_reverse_map, Integer.to_string(id))
+        end
 
       %Match {
         panda_id: Integer.to_string(match_data["id"]),
         time: Ecto.DateTime.cast!(match_data["begin_at"]),
         team_one: Map.get(team_reverse_map, Integer.to_string(team_one_id)),
         team_two: Map.get(team_reverse_map, Integer.to_string(team_two_id)),
-        winner: Map.get(team_reverse_map, winner)
+        winner: winner
       }
       |> WeeklyPickem.Repo.insert!
     end

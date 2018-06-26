@@ -64,7 +64,7 @@ config :weekly_pickem, WeeklyPickem.Repo,
 # Configure Scheduler
 config :weekly_pickem, WeeklyPickem.Scheduler,
   jobs: [
-    {"@daily", {MatchUpdates, :update, []}}
+    {"*/5 * * * *", {WeeklyPickem.Services.MatchUpdate, :update_all_old_matches, []}}
   ]
 
 import_config "dev.secret.exs"

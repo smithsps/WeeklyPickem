@@ -17,7 +17,7 @@ defmodule WeeklyPickem.Application do
       # worker(WeeklyPickem.Worker, [arg1, arg2, arg3]),
 
       # State Quantum Scheduler
-      #worker(WeeklyPickem.Scheduler, []),
+      worker(WeeklyPickem.Scheduler, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

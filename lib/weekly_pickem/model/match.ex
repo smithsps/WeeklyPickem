@@ -17,7 +17,7 @@ defmodule WeeklyPickem.Model.Match do
   @doc false
   def changeset(%Match{} = match, attrs) do
     match
-    |> cast(attrs, [:time, :cutoff])
-    |> validate_required([:time, :cutoff])
+    |> cast(attrs, [:panda_id, :time, :team_one, :team_two, :winner])
+    |> validate_required([:panda_id, :time, :team_one, :team_two, :winner])
   end
 end

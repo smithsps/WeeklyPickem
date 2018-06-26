@@ -26,6 +26,12 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :weekly_pickem, WeeklyPickem.Scheduler,
+  jobs: [
+    {"*/30 * * * *", {[WeeklyPickem.Services.MatchUpdate, :update_all_old_matches, []}}
+  ]
+
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
