@@ -126,9 +126,9 @@ class Match extends Component {
                       { isPickingAllowed ?
                         <PickButton match={this.props.match.id} team={this.props.match.teamTwo} />
                         :
-                        this.props.match.teamTwo.isPick ? <span class="tag is-success">Picked!</span> : ""
+                        this.props.match.teamTwo.isPick ? <span class="tag is-success">Picked</span> : ""
                       }
-                      {this.props.match.teamTwo.isWinner ? <span class="tag is-link">Winner!</span> : ""}
+                      {this.props.match.teamTwo.isWinner ? <span class="tag is-link">Winner</span> : ""}
                     </div>
                   </div>
                 </div>

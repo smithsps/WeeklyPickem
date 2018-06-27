@@ -14,18 +14,18 @@ class Navbar extends Component {
             <img src={logo} alt="Weekly League Pick'em" height="28"/>
           </Link>
 
-          {/* <button className="button navbar-burger">
+          <button className="button navbar-burger">
             <span></span>
             <span></span>
             <span></span>
-          </button> */}
+          </button>
         </div>
-        <div className="navbar-menu is-mobile">
+        <div className="navbar-menu">
           <div className="navbar-start">
             <Link className="navbar-item" to="/about">About</Link>
           </div>
 
-          <div className="navbar-end is-mobile">
+          <div className="navbar-end">
             <Query query={CURRENT_USER_QUERY} fetchPolicy="network-only">
               {({ client, loading, data }) => {
                 if (loading) {
