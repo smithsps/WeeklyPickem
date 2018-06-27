@@ -28,7 +28,7 @@ config :logger, level: :info
 
 config :weekly_pickem, WeeklyPickem.Scheduler,
   jobs: [
-    {"*/30 * * * *", {[WeeklyPickem.Services.MatchUpdate, :update_all_old_matches, []}}
+    {"*/30 * * * *", {WeeklyPickem.Services.MatchUpdate, :update_all_old_matches, []}}
   ]
 
 
