@@ -3,153 +3,9 @@ import { graphql, Mutation, Query } from 'react-apollo'
 import Moment from 'react-moment'
 import gql from 'graphql-tag'
 
+import Match from './Match'
 
-class Match extends Component {
-
-
-    updatePick(cache, submitUserPick) {
-        const data = cache.readFragment({
-            id: `Match:${submitUserPick.matchId}`,
-            fragment: MatchList.fragments.match,                                    
-            fragmentName: "MatchListMatch",
-        })
-
-        cache.writeFragment({ 
-            id: `Match:${submitUserPick.matchId}`,
-            fragment: MatchList.fragments.match,
-            data: {
-                ...data,
-                teamOne: {
-                    ...data.teamOne, 
-                    isPick: submitUserPick.teamId === data.teamOne.data.id
-                },
-                teamTwo: {
-                    ...data.teamTwo,
-                    isPick: submitUserPick.teamId === data.teamTwo.data.id
-                }
-            }
-        })
-    }
-
-    render() {
-        var isFinished = (Date.parse(this.props.match.time) - Date.now()) < 0
-
-        return (
-            <div className="match columns">
-            
-                <div className="column has-text-centered">
-                    <div className="matchTeamName">
-                        {this.props.match.teamOne.data.name}
-                    </div>
-                    <div className="matchBody">
-                        <Mutation mutation={SUBMIT_USER_PICK} 
-                            errorPolicy="all"
-                            update={ (cache, { data: { submitUserPick } }) => {
-                                this.updatePick(cache, submitUserPick)
-                            }}
-                        >
-                            {(submitPick, { loading, data, error }) => {
-
-                                if (loading) {
-                                    return (
-                                        <button type="submit" className="button is-link">
-                                            <span className="loader"></span>
-                                        </button>
-                                    )
-                                }
-
-                                if (this.props.match.teamOne.isPick) {
-                                    return (
-                                        <button type="submit" className="button is-link" disabled>
-                                            You have this team picked to win
-                                        </button>
-                                    )
-                                } else {
-                                    if (!isFinished) {
-                                        return (
-                                            <button type="submit" className="button is-link"
-                                                    onClick={e => {
-                                                        e.preventDefault();
-                                                        submitPick({ variables: { 
-                                                            teamId: this.props.match.teamOne.data.id, 
-                                                            matchId: this.props.match.id,
-                                                            teamName: this.props.match.teamOne.data.name
-                                                        }})
-                                                    }}
-                                                >
-                                                Pick this Team
-                                            </button>
-                                        )
-                                    } 
-                                    return null;
-                                }
-                            }}
-                        </Mutation>
-                    </div>
-                </div>
-
-                <div className="column has-text-centered">
-                    <h3 className="is-size-4">vs</h3>
-                    <p className="is-size-7">{<Moment format="dddd, MMMM Do, h A">{this.props.match.time}</Moment>}</p>
-                    <p className="is-size-7">{<Moment fromNow>{this.props.match.time}</Moment>}</p>
-                </div>
-
-                <div className="column has-text-centered">
-                    <div className="matchTeamName">
-                        {this.props.match.teamTwo.data.name}
-                    </div>
-                    <div className="matchBody">
-                        <Mutation mutation={SUBMIT_USER_PICK} 
-                            errorPolicy="all"
-                            update={ (cache, { data: { submitUserPick } }) => {
-                                this.updatePick(cache, submitUserPick)
-                            }}
-                        >
-                            {(submitPick, { loading, data, error }) => {
-
-                                if (loading) {
-                                    return (
-                                        <button type="submit" className="button is-link">
-                                            <span className="loader"></span>
-                                        </button>
-                                    )
-                                }
-
-                                if (this.props.match.teamTwo.isPick) {
-                                    return (
-                                        <button type="submit" className="button is-link" disabled>
-                                            You have this team picked to win
-                                        </button>
-                                    )
-                                } else {
-                                    if (!isFinished) {
-                                        return (
-                                            <button type="submit" className="button is-link"
-                                                    onClick={e => {
-                                                        e.preventDefault();
-                                                        submitPick({ variables: { 
-                                                            teamId: this.props.match.teamTwo.data.id, 
-                                                            matchId: this.props.match.id,
-                                                            teamName: this.props.match.teamTwo.data.name
-                                                        }})
-                                                    }}
-                                                >
-                                                Pick this Team
-                                            </button>
-                                        )
-                                    }
-                                    return null;
-                                }
-
-                                return null
-                            }}
-                        </Mutation>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
+const GROUP_SIZE = 10
 
 class MatchTab extends Component {
     render() {
@@ -184,17 +40,18 @@ class MatchList extends Component {
                     const matches = data.allMatches
 
                     // Build match groups of group size
-                    const GROUP_SIZE = 10;
-                    const matchTabs = matches.map( (e, i) => {
-                        if (i % GROUP_SIZE === 0) {
-                            return {
-                                id: i / GROUP_SIZE,
-                                tabName: `Week ${i / GROUP_SIZE + 1}`,
-                                matches: matches.slice(i, i + GROUP_SIZE)
+                    const matchTabs = matches
+                        .map( (e, i) => {
+                            if (i % GROUP_SIZE === 0) {
+                                return {
+                                    id: i / GROUP_SIZE,
+                                    tabName: `Week ${i / GROUP_SIZE + 1}`,
+                                    matches: matches.slice(i, i + GROUP_SIZE)
+                                }
                             }
-                        }
-                        return null
-                    }).filter((item) => {return item})
+                            return null
+                        })
+                        .filter((item) => {return item})
 
                     return (
                         <div>
@@ -263,22 +120,4 @@ const GET_MATCH = gql`
     ${MatchList.fragments.match}
 `
 
-
-const SUBMIT_USER_PICK = gql`
-    mutation submitUserPick (
-      $teamName: String!,
-      $teamId: String!,
-      $matchId: String!
-    ) {
-      submitUserPick (
-        teamName: $teamName, 
-        teamId: $teamId, 
-        matchId: $matchId
-      ) {
-        matchId
-        teamId
-      }
-    }
-`
-
-export default MatchList;
+export default MatchList

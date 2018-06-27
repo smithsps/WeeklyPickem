@@ -33,8 +33,7 @@ module.exports = (env) => {
       filename: 'js/[name].js',
       // Full path may be needed for sourcemapping? 
       // https://stackoverflow.com/questions/28846814/
-      // publicPath: 'http://localhost:4000/'
-      publicPath: '/'
+      publicPath: isDev ? 'http://localhost:4000/' : '/'
     },
 
     devServer: {

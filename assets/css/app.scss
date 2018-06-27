@@ -86,6 +86,18 @@ $label-color: #222;
   }
 }
 
+.match-body .is-picked {
+  background-color: $gold !important;
+  border: 1px solid $dark-grey
+}
+
+.match-body .is-picked :focus {
+  box-shadow: 0 0 0 0.125em rgb(3, 12, 27);
+}
+
+
+
+
 
 // Match List
 $tabs-boxed-link-hover-background-color: #1a1a1a;
@@ -95,3 +107,42 @@ $tabs-link-hover-color: $gold;
 
 
 @import "node_modules/bulma/bulma";
+
+
+.match-team {
+  @include mobile {
+    min-width: 112px;
+  }
+
+  @include tablet {
+    width: 256px;
+  }
+}
+
+.match-team-name .acronym {
+  @include tablet {
+    display: none;
+  }
+}
+
+.match-team-name .name {
+  @include mobile {
+    display: none;
+  }
+}
+
+
+.match-team-logo {  
+  @include tablet {
+    height: 96px;
+    width: 96px;
+    margin: 0 10px 0 10px;
+  }
+
+  @include mobile {
+    width: 48px;
+    height: 48px;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+}

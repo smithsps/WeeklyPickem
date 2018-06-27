@@ -9,7 +9,7 @@ defmodule WeeklyPickemWeb.Resolvers.MatchResolver do
     with %{context: %{current_user: current_user_id}} <- resolution
     do
       # List of all matches, right now thats only Summer 2018 NA LCS.
-      matches = Match |> WeeklyPickem.Repo.all
+      matches = Match |> order_by(asc: :time) |> WeeklyPickem.Repo.all
 
       # Find all unqiue teams in our list of matches
       unique_teams = 
