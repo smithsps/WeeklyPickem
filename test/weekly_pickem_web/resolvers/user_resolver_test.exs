@@ -1,7 +1,7 @@
-defmodule WeeklyPickemWeb.Resolvers.UserResolverTest do
-  use WeeklyPickemWeb.ConnCase
-  alias WeeklyPickemWeb.Resolvers.UserResolver
-  alias WeeklyPickemWeb.AbsintheHelpers
+defmodule WeeklyPickem.Web.Resolvers.UserResolverTest do
+  use WeeklyPickem.Web.ConnCase
+  alias WeeklyPickem.Web.Resolvers.UserResolver
+  alias WeeklyPickem.Web.AbsintheHelpers
 
   @valid_user %{name: "Test User",
                  email: "test@test.com", email_confirmation: "test@test.com",

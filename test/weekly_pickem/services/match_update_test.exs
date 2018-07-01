@@ -1,12 +1,12 @@
-defmodule WeeklyPickem.Services.MatchUpdatesTest do
+defmodule WeeklyPickem.Esport.Service.MatchUpdatesTest do
   use ExUnit.Case
   use WeeklyPickem.DataCase
 
-  alias WeeklyPickem.Services.MatchUpdate
+  alias WeeklyPickem.Esport.Service.MatchUpdate
 
   test "name is required" do
     #MatchUpdate.current_leagues()
-    matches = MatchUpdate.update()
+   # matches = MatchUpdate.update()
 
     # Enum.each matches, fn match ->
     #   teams = MapSet.new
@@ -45,9 +45,9 @@ defmodule WeeklyPickem.Services.MatchUpdatesTest do
 
 
 
-    IO.inspect matches
+    # IO.inspect matches
 
-    WeeklyPickem.Services.TeamUpdate.update()
+    # WeeklyPickem.Esport.Service.TeamUpdate.update()
 
     assert true
   end

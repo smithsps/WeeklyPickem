@@ -1,6 +1,6 @@
 # This helper is from Tony Osbourn at Tosbourn.com
 # https://tosbourn.com/testing-absinthe-exunit/
-defmodule WeeklyPickemWeb.AbsintheHelpers do
+defmodule WeeklyPickem.Web.AbsintheHelpers do
 
   def query_skeleton(query, query_name) do
     %{

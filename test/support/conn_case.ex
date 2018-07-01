@@ -1,4 +1,4 @@
-defmodule WeeklyPickemWeb.ConnCase do
+defmodule WeeklyPickem.Web.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,10 +19,10 @@ defmodule WeeklyPickemWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import WeeklyPickemWeb.Router.Helpers
+      import WeeklyPickem.Web.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint WeeklyPickemWeb.Endpoint
+      @endpoint WeeklyPickem.Web.Endpoint
     end
   end
 

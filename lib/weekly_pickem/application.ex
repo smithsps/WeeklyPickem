@@ -11,7 +11,7 @@ defmodule WeeklyPickem.Application do
       # Start the Ecto repository
       supervisor(WeeklyPickem.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(WeeklyPickemWeb.Endpoint, []),
+      supervisor(WeeklyPickem.Web.Endpoint, []),
 
       # Start your own worker by calling: WeeklyPickem.Worker.start_link(arg1, arg2, arg3)
       # worker(WeeklyPickem.Worker, [arg1, arg2, arg3]),
@@ -29,7 +29,7 @@ defmodule WeeklyPickem.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    WeeklyPickemWeb.Endpoint.config_change(changed, removed)
+    WeeklyPickem.Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

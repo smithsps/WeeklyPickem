@@ -12,10 +12,10 @@
 
 alias WeeklyPickem.Repo
 
-alias WeeklyPickem.Model.User
-alias WeeklyPickem.Model.Team
-alias WeeklyPickem.Model.Match
-alias WeeklyPickem.Model.Pick
+alias WeeklyPickem.Account.User
+alias WeeklyPickem.Esport.Team
+alias WeeklyPickem.Esport.Match
+alias WeeklyPickem.Pickem.Pick
 
 # "password"
 fake_password = "$argon2i$v=19$m=65536,t=6,p=1$ZoHzGFWK98QZl3chJeAqgg$jPWznqwlqrV0QPQ+ZfFAqZtAVHEMArb310ntjvV2EsY"

@@ -1,5 +1,5 @@
-defmodule WeeklyPickemWeb.PageControllerTest do
-  use WeeklyPickemWeb.ConnCase
+defmodule WeeklyPickem.Web.PageControllerTest do
+  use WeeklyPickem.Web.ConnCase
 
   # test "GET /", %{conn: conn} do
   #   conn = get conn, "/"

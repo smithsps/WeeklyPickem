@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :weekly_pickem, WeeklyPickemWeb.Endpoint,
+config :weekly_pickem, WeeklyPickem.Web.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -35,13 +35,13 @@ config :weekly_pickem, WeeklyPickemWeb.Endpoint,
 config :weekly_pickem, :environment, :dev
 
 # Watch static and templates for browser reloading.
-config :weekly_pickem, WeeklyPickemWeb.Endpoint,
+config :weekly_pickem, WeeklyPickem.Web.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg|scss)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/weekly_pickem_web/views/.*(ex)$},
-      ~r{lib/weekly_pickem_web/templates/.*(eex)$}
+      ~r{lib/weekly_pickem/web/views/.*(ex)$},
+      ~r{lib/weekly_pickem/web/templates/.*(eex)$}
     ]
   ]
 
@@ -64,7 +64,7 @@ config :weekly_pickem, WeeklyPickem.Repo,
 # Configure Scheduler
 config :weekly_pickem, WeeklyPickem.Scheduler,
   jobs: [
-    {"*/15 * * * *", {WeeklyPickem.Services.MatchUpdate, :update_all_old_matches, []}}
+    {"*/15 * * * *", {WeeklyPickem.Esport.Service.MatchUpdate, :update_all_old_matches, []}}
   ]
 
 import_config "dev.secret.exs"

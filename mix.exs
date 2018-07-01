@@ -52,7 +52,7 @@ defmodule WeeklyPickem.Mixfile do
       {:httpoison, "~> 1.1"},
       {:poison, "~> 3.1"},
       {:basic_auth, "~> 2.2.2"},
-      {:distillery, "~> 1.5", runtime: false}
+      {:distillery, "~> 1.5.3", runtime: false}
     ]
   end
 

@@ -1,7 +1,7 @@
-defmodule WeeklyPickem.Model.UserTest do
+defmodule WeeklyPickem.Account.UserTest do
   use WeeklyPickem.DataCase
 
-  alias WeeklyPickem.Model.User
+  alias WeeklyPickem.Account.User
 
   @valid_attrs %{name: "Test User",
                  email: "test@test.com", email_confirmation: "test@test.com",

@@ -39,3 +39,6 @@ npm-debug.log
 # Release builds
 /target 
 .dockerenv
+
+# Backups from Production
+/backup

@@ -1,4 +1,4 @@
-defmodule WeeklyPickemWeb.ChannelCase do
+defmodule WeeklyPickem.Web.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,7 +21,7 @@ defmodule WeeklyPickemWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint WeeklyPickemWeb.Endpoint
+      @endpoint WeeklyPickem.Web.Endpoint
     end
   end
 

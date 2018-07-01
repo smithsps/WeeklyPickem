@@ -1,3 +1,3 @@
-defmodule WeeklyPickemWeb.PageViewTest do
-  use WeeklyPickemWeb.ConnCase, async: true
+defmodule WeeklyPickem.Web.PageViewTest do
+  use WeeklyPickem.Web.ConnCase, async: true
 end

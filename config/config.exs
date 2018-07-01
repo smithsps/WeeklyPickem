@@ -10,10 +10,10 @@ config :weekly_pickem,
   ecto_repos: [WeeklyPickem.Repo]
 
 # Configures the endpoint
-config :weekly_pickem, WeeklyPickemWeb.Endpoint,
+config :weekly_pickem, WeeklyPickem.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "YAGUCHHb9w6hFkzu4EUL2OY6+XVnLUy6k17edB+MpkuwNaXYZ/EQTUWJSrsqf0Ns",
-  render_errors: [view: WeeklyPickemWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: WeeklyPickem.Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: WeeklyPickem.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
