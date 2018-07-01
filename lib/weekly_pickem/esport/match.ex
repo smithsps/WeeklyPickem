@@ -3,6 +3,7 @@ defmodule WeeklyPickem.Esport.Match do
   import Ecto.Changeset
   import Ecto.Query
 
+  alias WeeklyPickem.Repo
   alias WeeklyPickem.Esport.Match
   alias WeeklyPickem.Esport.Team
   alias WeeklyPickem.Pickem.Pick
@@ -26,66 +27,32 @@ defmodule WeeklyPickem.Esport.Match do
 
 
   def get_all_matches(user_id) do
-    # List of all matches, right now thats only Summer 2018 NA LCS.
-    matches = Match |> order_by(asc: :time) |> WeeklyPickem.Repo.all
 
-    # Find all unqiue teams in our list of matches
-    unique_teams = 
-      matches 
-      |> Enum.reduce(MapSet.new, fn(match, acc) -> 
-          acc = MapSet.put(acc, match.team_one)
-          MapSet.put(acc, match.team_two)
-        end)
-      |> MapSet.to_list
-    
-    # Get all unqiue team objs and Map team.id to them
-    teams_map = 
-      Team 
-      |> where([t], t.id in ^unique_teams) 
-      |> WeeklyPickem.Repo.all
-      |> Enum.reduce(Map.new, fn(team, acc) ->
-           Map.put_new(acc, team.id, team)
-         end)
-    
-    # Map match_id to current user's picks
-    user_pick_map =
-      Pick
-      |> where([p], p.user_id == ^user_id)
-      |> WeeklyPickem.Repo.all
-      |> Enum.reduce(Map.new, fn(pick, acc) ->
-           Map.put_new(acc, pick.match_id, pick)
-         end)
+    query = from m in Match,
+      left_join: t1 in Team, on: t1.id == m.team_one,
+      left_join: t2 in Team, on: t2.id == m.team_two,
+      left_join: p in Pick, on: p.match_id == m.id, where: p.user_id == ^user_id or is_nil(p.user_id),
+      order_by: m.time,
+      select: %{match: m, team1: t1, team2: t2, pick: p}
 
-    # Combine all of these into a comprehesive data format
-    match_list =
-      Enum.map(matches, fn(m) ->
-        
-        user_pick =
-          case Map.get(user_pick_map, m.id) do
-            %Pick{team_id: team_id} -> team_id
-            _ -> nil
-          end
 
-        team_one = %{
-          data: Map.from_struct(Map.get(teams_map, m.team_one)),
-          is_winner: m.winner == m.team_one,
-          is_pick: user_pick == m.team_one
+    match_list = Enum.map(Repo.all(query), fn(q) -> 
+      %{
+        id: q.match.id,
+        time: q.match.time,
+        team_one: %{
+          data: Map.from_struct(q.team1),
+          is_winner: not is_nil(q.match.winner) and q.match.winner == q.team1.id,
+          is_pick: not is_nil(q.pick) and q.pick.team_id == q.team1.id
+        },
+        team_two: %{
+          data: Map.from_struct(q.team2),
+          is_winner: not is_nil(q.match.winner) and q.match.winner == q.team2.id,
+          is_pick: not is_nil(q.pick) and q.pick.team_id == q.team2.id
         }
-        
-        team_two = %{
-          data: Map.from_struct(Map.get(teams_map, m.team_two)),
-          is_winner: m.winner == m.team_two,
-          is_pick: user_pick == m.team_two
-        }
-        
-        %{
-          id: m.id,
-          time: m.time,
-          team_one: team_one,
-          team_two: team_two,
-        } 
-      end)
-
+      }
+    end)
+    
     {:ok, match_list}
   end
 end
