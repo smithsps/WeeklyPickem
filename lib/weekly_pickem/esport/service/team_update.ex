@@ -13,8 +13,7 @@ defmodule WeeklyPickem.Esport.Service.TeamUpdate do
       %Team {
         panda_id: Integer.to_string(Map.get(team, "id")),
         name: team["name"],
-        acronym: team["acronym"],
-        league: nil,
+        acronym: team["acronym"]
       }
       |> WeeklyPickem.Repo.insert!
       |> IO.inspect

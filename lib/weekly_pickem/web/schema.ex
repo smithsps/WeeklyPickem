@@ -9,7 +9,6 @@ defmodule WeeklyPickem.Web.Schema do
     field :id, non_null(:id)
     field :name, non_null(:string)
     field :acronym, non_null(:string)
-    field :region, non_null(:string)
     field :is_pick, non_null(:boolean)
     field :is_winner, :boolean
   end
