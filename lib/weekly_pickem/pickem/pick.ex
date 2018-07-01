@@ -2,6 +2,7 @@ defmodule WeeklyPickem.Pickem.Pick do
   use Ecto.Schema
   import Ecto.Changeset
   
+  alias WeeklyPickem.Esport.Match
   alias WeeklyPickem.Pickem.Pick
 
 
@@ -21,7 +22,7 @@ defmodule WeeklyPickem.Pickem.Pick do
   end
 
   def insert_or_update_pick(user_id, match_id, team_id) do
-    with {:ok, match} <- WeeklyPickem.Repo.get(Match, match_id) do
+    with match <- WeeklyPickem.Repo.get!(Match, match_id) do
 
       match_time = Timex.parse!(DateTime.to_iso8601(match.time), "{ISO:Extended}")
 
@@ -51,7 +52,7 @@ defmodule WeeklyPickem.Pickem.Pick do
       end
 
     else 
-      _ -> {:error, "User is not logged in or invalid match."}
+      _ -> {:error, "Invalid match id for pick."}
     end
   end
 end
