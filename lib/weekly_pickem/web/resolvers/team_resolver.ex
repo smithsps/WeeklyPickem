@@ -6,9 +6,4 @@ defmodule WeeklyPickem.Web.Resolvers.TeamResolver do
     {:ok, teams}
   end
 
-  # def get_team(_root, args, _info) do
-  #   team = Query.get_team(args)
-  #   {:ok, team}
-  # end
-
 end

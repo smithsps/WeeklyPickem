@@ -2,6 +2,7 @@ defmodule WeeklyPickem.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias WeeklyPickem.Repo
   alias WeeklyPickem.Account.User
   alias WeeklyPickem.Pickem.Pick
 
@@ -27,5 +28,18 @@ defmodule WeeklyPickem.Account.User do
     |> validate_confirmation(:password, required: true, message: "Password does not match password confirmation")
     |> force_change(:password, if Map.has_key?(attrs, :password) do Argon2.hash_pwd_salt(attrs.password) end)
     |> unique_constraint(:email, message: "Email has already been taken.")
+  end
+
+  def get_user_profile(user_id) do
+    with {:ok, user} <- Repo.get(User, user_id)
+    do
+      {:ok, user}
+    else
+      _ -> {:error, "User does not exist."}
+    end
+  end
+
+  def get_user_by_email(email) do
+    Repo.get_by!(User, email: email)
   end
 end

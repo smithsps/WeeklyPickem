@@ -1,28 +1,16 @@
 defmodule WeeklyPickem.Web.Resolvers.UserResolver do
 
-  import Joken
-
-  alias WeeklyPickem.Repo
   alias WeeklyPickem.Account.User
+  alias WeeklyPickem.Account.Registration
   alias WeeklyPickem.Account.RefreshToken
 
 
   def create_user(_root, args, _resolution) do
-    case repo_create_user(args) do
-      {:ok, user} -> {:ok, user}
-      {:error, user} -> {:error, map_errors_to_list_of_strings(user.errors)}
-      _error -> {:error, "Undefined error occured."}
-    end
-  end
-
-  defp repo_create_user(attrs) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    Registration.create_new_user(args)
   end
 
   def login_user(_root, args, _resolution) do
-    case Repo.get_by(User, email: args.email) do
+    case User.get_user_by_email(args.email) do
 
       # To help prevent user enumeration, we simulate the time that would be
       # checking a password, even if the user does not exist.
@@ -33,8 +21,8 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolver do
       user ->
         if Argon2.verify_pass(args.password, user.password) do
           {:ok,
-            %{refresh_token: create_refresh_token(user.id),
-              access_token: create_access_token(user.id),
+            %{refresh_token: RefreshToken.create_refresh_token(user.id),
+              access_token: RefreshToken.create_access_token(user.id),
               user: user
             }
           }
@@ -45,24 +33,12 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolver do
   end
 
   def refresh_access(_root, args, _resolution) do
-    case get_refresh_token(args.refresh_token) do
-      nil -> {:error, "Invalid refresh token."}
-
-      refresh_token ->
-        if current_time() > refresh_token.expiration do
-          {:ok, %{token: create_access_token(refresh_token.user_id)}}
-        else
-          case Repo.delete(refresh_token) do
-            _result -> {:error, "Invalid refresh token."}
-          end
-        end
-    end
+    RefreshToken.refresh_access(args.refresh_token)
   end
 
   # For security, shouldn't we always return he same message?
   def logout_user(_root, args, _resolution) do
-    with {:ok, token} <- Repo.get_by(RefreshToken, token: args.refresh_token),
-         Repo.delete(token.id)
+    with {:ok, _token} <- RefreshToken.remove_refresh_token(args.refresh_token)
     do
       {:ok, %{message: "Logout successful."}}
     else
@@ -80,60 +56,12 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolver do
   end
 
   def current_user_profile(_root, _args, resolution) do
-    with %{context: %{current_user: current_user_id}} <- resolution, 
-         user <- Repo.get_by(User, id: current_user_id)
+    with %{context: %{current_user: current_user_id}} <- resolution
     do
-      {:ok, user}
+      User.get_user_profile(current_user_id)
     else
       _ -> {:error, "User is not logged in."}
     end
-  end
-
-  defp create_access_token(user_id) do
-    new_token = %{user_id: user_id}
-    |> token
-    |> with_exp(current_time() + 5 * 60)
-    |> with_signer(hs512(secret()))
-    |> sign
-    |> get_compact
-
-    %{token: new_token}
-  end
-
-  defp create_refresh_token(user_id) do
-    token = :crypto.strong_rand_bytes(64) |> Base.encode64(padding: false)
-    expiration = current_time() + 30 * 24 * 60
-
-    new_refresh_token = %RefreshToken{
-      user_id: user_id,
-      token: token,
-      expiration: expiration
-    }
-    |> Repo.insert()
-
-    case new_refresh_token do
-      {:ok, token} -> %{token: token.token, expiration: token.expiration}
-      _error -> %{error: "Unexpected, could not create refresh token."}
-    end
-  end
-
-  defp get_refresh_token(refresh_token) do
-    Repo.get_by(RefreshToken, token: refresh_token)
-  end
-
-  defp secret() do
-    Application.get_env(:weekly_pickem, :secrets)[:user_tokens]
-  end
-
-  defp map_errors_to_list_of_strings(errors) do
-    Enum.flat_map(errors, fn ({field, error}) ->
-      {msg, _opts} = error
-      # Enum.reduce(opts, msg, fn {key, value}, acc ->
-      #   acc = String.replace(acc, "%{#{key}}", "TEST: " <>to_string(value))
-      #   acc
-      # end)
-      ["#{field} #{msg}"]
-    end)
   end
 
 end
