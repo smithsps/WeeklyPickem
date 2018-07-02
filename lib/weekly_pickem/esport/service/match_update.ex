@@ -8,25 +8,6 @@ defmodule WeeklyPickem.Esport.Service.MatchUpdate do
 
   @na_summer_split_series_id "1482"
 
-  # def current_leagues() do
-  #   new_request("lol/series")
-  #   |> range("year", "2018", "2018")
-  #   |> execute
-  # end
-
-  # def current_na_leagues() do
-  #   new_request("lol/series")
-  #   |> search("description", "NA")
-  #   |> range("year", "2018", "2018")
-  #   |> execute
-  # end
-
-  # def get_teams(ids) do
-  #   new_request("teams")
-  #   |> filter("id", ids)
-  #   |> execute
-  # end
-
   def update_all_old_matches do 
     now = Ecto.DateTime.utc()
     old_matches = 
@@ -44,7 +25,8 @@ defmodule WeeklyPickem.Esport.Service.MatchUpdate do
   def update_match(id) do
     with match = WeeklyPickem.Repo.get!(Match, id),
          updated_match = get_match_from_panda(match.panda_id),
-         panda_id = Integer.to_string(updated_match["winner"]["id"]),
+         winner when not is_nil(winner) <- updated_match["winner"],
+         panda_id = Integer.to_string(winner["id"]),
          winner = WeeklyPickem.Repo.get_by!(Team, panda_id: panda_id)
     do
       if winner != nil do
