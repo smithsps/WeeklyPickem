@@ -5,6 +5,9 @@ defmodule WeeklyPickem.Esport.Service.MatchUpdate do
 
   alias WeeklyPickem.Esport.Match
   alias WeeklyPickem.Esport.Team
+  alias WeeklyPickem.Esport.TeamStats
+  alias WeeklyPickem.Pickem.PickStats
+
 
   @na_summer_split_series_id "1482"
 
@@ -30,9 +33,12 @@ defmodule WeeklyPickem.Esport.Service.MatchUpdate do
          winner = WeeklyPickem.Repo.get_by!(Team, panda_id: panda_id)
     do
       if winner != nil do
-        match
-        |> Match.changeset(%{winner: winner.id})
-        |> WeeklyPickem.Repo.update! 
+        match = match
+          |> Match.changeset(%{winner: winner.id})
+          |> WeeklyPickem.Repo.update! 
+
+        TeamStats.increment_team_stats(match)
+        PickStats.increment_pick_stats(match)
       end
     end
   end
