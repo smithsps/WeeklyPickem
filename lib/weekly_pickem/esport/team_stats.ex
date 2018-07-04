@@ -33,5 +33,7 @@ defmodule WeeklyPickem.Esport.TeamStats do
     # Increment loser's stats
     from(ts in TeamStats, where: ^loser == ts.team_id and ^match.series_id == ts.series_id)
     |> Repo.update(update: [inc: [total: 1]])
+
+    {:ok}
   end
 end

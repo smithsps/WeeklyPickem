@@ -39,5 +39,7 @@ defmodule WeeklyPickem.Pickem.PickStats do
       where: ps.series_id == ^match.series_id
     )
     |> Repo.update_all(update: [inc: [total: 1]])
+
+    {:ok}
   end
 end
