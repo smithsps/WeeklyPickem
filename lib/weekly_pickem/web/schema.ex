@@ -5,25 +5,61 @@ defmodule WeeklyPickem.Web.Schema do
 
   alias WeeklyPickem.Web.Resolvers
 
+  @desc "Non-match specific team data"
   object :team_data do
     field :id, non_null(:id)
     field :name, non_null(:string)
     field :acronym, non_null(:string)
-    field :is_pick, non_null(:boolean)
-    field :is_winner, :boolean
+    field :stats, non_null(:team_stats)
   end
 
+  @desc "Relevant team data for match"
   object :match_team do
     field :data, non_null(:team_data)
     field :is_pick, non_null(:boolean)
     field :is_winner, :boolean
   end
 
+  @desc "Match with embeded relevant"
   object :match do
     field :id, non_null(:id)
     field :time, non_null(:datetime)
     field :team_one, non_null(:match_team)
     field :team_two, non_null(:match_team)
+  end
+
+  @desc "Series of Matches, e.g. Season/Tourney"
+  object :series do
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :start_at, non_null(:datetime)
+    field :matches, list_of(:match)
+    field :pick_stats, non_null(:user_pick_stats)
+  end
+
+  @desc "Submit-only object for choosing picks"
+  object :pick do
+    field :team_id, non_null(:id)
+    field :match_id, non_null(:id)
+  end
+
+  @desc "User Correct/Wrong Stats for Picks"
+  object :user_pick_stats do
+    field :id, non_null(:id)
+    field :correct, non_null(:integer)
+    field :total_picks, non_null(:integer)
+  end
+
+  @desc "Win/Loss Stats for Team"
+  object :team_stats do
+    field :id, non_null(:id)
+    field :wins, non_null(:integer)
+    field :total_games, non_null(:integer)
+  end
+
+  @desc "User ID Only"
+  object :user_id do
+    field :id, non_null(:string)
   end
 
   @desc "Simple user object with id, name and email"
@@ -33,21 +69,12 @@ defmodule WeeklyPickem.Web.Schema do
     field :email, non_null(:string)
   end
 
-  object :pick do
-    field :team_id, non_null(:id)
-    field :match_id, non_null(:id)
-  end
-
-  @desc "User ID Only"
-  object :user_id do
-    field :id, non_null(:string)
-  end
-
   @desc "Access token, used for authenticating API calls"
   object :access_token do
     field :token, non_null(:string)
   end
 
+  @desc "Refresh token, used for getting new Access Tokens"
   object :refresh_token do
     field :token, non_null(:string)
     field :expiration, non_null(:integer)
@@ -80,8 +107,9 @@ defmodule WeeklyPickem.Web.Schema do
       resolve &Resolvers.UserResolver.current_user_profile/3  
     end
 
-    field :all_matches, list_of(non_null(:match)) do
-      resolve &Resolvers.MatchResolver.all_matches/3
+    field :get_series, :series do
+      arg :series_tag, non_null(:string)
+      resolve &Resolvers.MatchResolver.get_series/3
     end
 
   end

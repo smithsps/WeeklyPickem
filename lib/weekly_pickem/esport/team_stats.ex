@@ -1,6 +1,5 @@
 defmodule WeeklyPickem.Esport.TeamStats do
   use Ecto.Schema
-  import Ecto.Changeset
   import Ecto.Query
   
   alias WeeklyPickem.Repo

@@ -1,6 +1,5 @@
 defmodule WeeklyPickem.Pickem.PickStats do
   use Ecto.Schema
-  import Ecto.Changeset
   import Ecto.Query
   
   alias WeeklyPickem.Repo
@@ -41,5 +40,9 @@ defmodule WeeklyPickem.Pickem.PickStats do
     |> Repo.update_all(update: [inc: [total: 1]])
 
     {:ok}
+  end
+
+  def get_pick_stats_by_series(user_id, series_id) do
+    Repo.get_by!(PickStats, %{user_id: user_id, series_id: series_id} )
   end
 end

@@ -22,7 +22,7 @@ defmodule WeeklyPickem.Pickem.Pick do
   end
 
   def insert_or_update_pick(user_id, match_id, team_id) do
-    with match <- WeeklyPickem.Repo.get!(Match, match_id) do
+    with %Match{} = match <- WeeklyPickem.Repo.get!(Match, match_id) do
 
       match_time = Timex.parse!(DateTime.to_iso8601(match.time), "{ISO:Extended}")
 
