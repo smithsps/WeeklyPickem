@@ -1,5 +1,6 @@
 defmodule WeeklyPickem.Esport.Series do
   use Ecto.Schema
+  import Ecto.Changeset
 
   alias WeeklyPickem.Repo
   alias WeeklyPickem.Esport.Match
@@ -15,6 +16,13 @@ defmodule WeeklyPickem.Esport.Series do
     has_many :matches, Match
 
     timestamps()
+  end
+
+  @doc false
+  def changeset(%Series{} = series, attrs) do
+    series
+    |> cast(attrs, [:name, :start_date, :region, :tag])
+    |> validate_required([:name, :start_date, :region, :tag])
   end
 
   def get_series(user_id, series_tag) do
