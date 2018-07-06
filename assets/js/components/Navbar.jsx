@@ -39,6 +39,7 @@ class Navbar extends Component {
                 if (data && data.currentUser.id) {
                   return (
                     <div className="navbar-end">
+                      <Link className="navbar-item" to="/leaderboard">Leaderboard</Link>
                       <Link className="navbar-item" to="/pickem">Your Pick'em</Link>
                       <a 
                         className="navbar-item"

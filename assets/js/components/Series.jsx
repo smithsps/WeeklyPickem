@@ -52,22 +52,27 @@ class Series extends Component {
                                 <p className="title is-5 is-spaced has-text-white">{data.getSeries.name}</p>
                               </div>
                             </div>
-                            <div className="level-right">
-                              <div className="level is-mobile">
-                                <div className="level-item" style={{margin: "15px"}}>
-                                  <div className="has-text-centered">
-                                    <p className="heading">Picks</p>
-                                    <p className="title has-text-white">{data.getSeries.pickStats.correct} / {data.getSeries.pickStats.total}</p>                      
-                                  </div>
+                            {
+                                data.getSeries.pickStats ?
+                                <div className="level-right">
+                                    <div className="level is-mobile">
+                                        <div className="level-item" style={{margin: "15px"}}>
+                                            <div className="has-text-centered">
+                                                <p className="heading">Picks</p>
+                                                <p className="title has-text-white">{data.getSeries.pickStats.correct} / {data.getSeries.pickStats.total}</p>                      
+                                            </div>
+                                        </div>
+                                        <div className="level-item" style={{margin: "15px"}}>
+                                            <div className="has-text-centered">
+                                                <p className="heading">Correct %</p>
+                                                <p className="title has-text-white">{ratioToPercentage(data.getSeries.pickStats.correct, data.getSeries.pickStats.total)}%</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="level-item" style={{margin: "15px"}}>
-                                  <div className="has-text-centered">
-                                    <p className="heading">Correct %</p>
-                                    <p className="title has-text-white">{ratioToPercentage(data.getSeries.pickStats.correct, data.getSeries.pickStats.total)}%</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                                : ""
+                            }
+                            
                           </div>
                           <MatchList matchTabs={matchTabs} startingTab={startingTab} /> 
                         </div>
@@ -79,7 +84,7 @@ class Series extends Component {
 };
 
 function ratioToPercentage(a, b) {
-  return Math.floor(a / b * 100)
+    return Math.floor(a / b * 1000) / 10
 }
 
 MatchList.fragments = {

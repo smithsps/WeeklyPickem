@@ -1,10 +1,13 @@
 defmodule WeeklyPickem.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias WeeklyPickem.Repo
   alias WeeklyPickem.Account.User
   alias WeeklyPickem.Pickem.Pick
+  alias WeeklyPickem.Pickem.PickStats
+  alias WeeklyPickem.Esport.Series
 
   schema "users" do
     field :email, :string
@@ -40,6 +43,29 @@ defmodule WeeklyPickem.Account.User do
   end
 
   def get_user_by_email(email) do
-    Repo.get_by!(User, email: email)
+    Repo.get_by(User, email: email)
+  end
+
+  def get_series_user_stats(series_tag) do
+    series = Repo.get_by!(Series, tag: series_tag)
+
+    query = from u in User,
+      left_join: ps in PickStats, on: u.id == ps.user_id,
+      where: ps.series_id == ^series.id,
+      select: %{user: u, stats: ps}
+
+    user_list = Enum.map(Repo.all(query), fn(q) -> 
+      %{
+        id: q.user.id,
+        name: q.user.name,
+        stats: %{
+          id: q.stats.id,
+          correct: q.stats.correct,
+          total: q.stats.total
+        }
+      }
+    end)
+
+    {:ok, user_list}
   end
 end

@@ -41,6 +41,7 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
 import Pickem from './pages/Pickem'
+import Leaderboard from './pages/Leaderboard'
 
 import Navbar from './components/Navbar'
 
@@ -105,6 +106,7 @@ ReactDOM.render((
         <Route path="/signup" component={Registration} />
 
         <Route path="/pickem" component={Pickem} />
+        <Route path="/leaderboard" component={Leaderboard} />
 
         <Route path="/graphiql" component={GraphiQL} />
       </div>

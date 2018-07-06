@@ -53,6 +53,6 @@ defmodule WeeklyPickem.Pickem.PickStats do
   end
 
   def get_pick_stats_by_series(user_id, series_id) do
-    Repo.get_by!(PickStats, %{user_id: user_id, series_id: series_id} )
+    Repo.get_by(PickStats, %{user_id: user_id, series_id: series_id} )
   end
 end

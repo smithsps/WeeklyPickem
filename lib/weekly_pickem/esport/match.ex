@@ -30,19 +30,17 @@ defmodule WeeklyPickem.Esport.Match do
 
   def get_matches_by_series(user_id, series_id) do
 
+    user_picks = from(p in Pick, where: p.user_id == ^user_id or is_nil(p.user_id))
+
     query = from m in Match,
       left_join: t1 in Team, on: t1.id == m.team_one,
       left_join: t1s in TeamStats, on: t1s.team_id == t1.id,
       left_join: t2 in Team, on: t2.id == m.team_two,
       left_join: t2s in TeamStats, on: t2s.team_id == t2.id,
-      left_join: p in Pick, on: p.match_id == m.id, 
-      where: p.user_id == ^user_id or is_nil(p.user_id),
+      left_join: p in subquery(user_picks), on: p.match_id == m.id, 
       where: m.series_id == ^series_id,
       order_by: m.time,
       select: %{match: m, team1: t1, team1_stats: t1s, team2: t2, team2_stats: t2s, pick: p}
-
-
-
 
     match_list = Enum.map(Repo.all(query), fn(q) -> 
       %{

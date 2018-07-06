@@ -34,7 +34,7 @@ defmodule WeeklyPickem.Web.Schema do
     field :name, non_null(:string)
     field :start_at, non_null(:datetime)
     field :matches, list_of(:match)
-    field :pick_stats, non_null(:user_pick_stats)
+    field :pick_stats, :user_pick_stats
   end
 
   @desc "Submit-only object for choosing picks"
@@ -63,10 +63,17 @@ defmodule WeeklyPickem.Web.Schema do
   end
 
   @desc "Simple user object with id, name and email"
-  object :user do
+  object :current_user do
     field :id, non_null(:string)
+    field :name, :string
+    field :email, :string
+  end
+
+  @desc "Public user profile"
+  object :public_user_profile do
+    field :id, non_null(:id)
     field :name, non_null(:string)
-    field :email, non_null(:string)
+    field :stats, list_of(:user_pick_stats)
   end
 
   @desc "Access token, used for authenticating API calls"
@@ -84,7 +91,7 @@ defmodule WeeklyPickem.Web.Schema do
   object :login do
     field :refresh_token, non_null(:refresh_token)
     field :access_token, non_null(:access_token)
-    field :user, non_null(:user)
+    field :user, non_null(:current_user)
   end
 
   @desc "Logout user by supplying a corresponding refresh token"
@@ -103,7 +110,7 @@ defmodule WeeklyPickem.Web.Schema do
     end
     
     @desc "Return current user's profile"
-    field :current_user_profile, :user do
+    field :current_user_profile, :current_user do
       resolve &Resolvers.UserResolver.current_user_profile/3  
     end
 
@@ -111,6 +118,12 @@ defmodule WeeklyPickem.Web.Schema do
     field :get_series, :series do
       arg :series_tag, non_null(:string)
       resolve &Resolvers.MatchResolver.get_series/3
+    end
+
+    @desc ""
+    field :get_series_user_stats, list_of(:public_user_profile) do
+      arg :series_tag, non_null(:string)
+      resolve &Resolvers.UserResolver.get_series_user_stats/3
     end
 
   end
@@ -139,7 +152,7 @@ defmodule WeeklyPickem.Web.Schema do
     end
 
     @desc "Create a new user"
-    field :create_user, :user do
+    field :create_user, :current_user do
       arg :name, non_null(:string)
       arg :email, non_null(:string)
       arg :email_confirmation, non_null(:string)
