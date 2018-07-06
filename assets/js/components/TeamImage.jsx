@@ -28,7 +28,7 @@ class TeamImage extends Component {
   render() {
     if (team_image[this.props.team.acronym]) {
       return (
-        <figure class="match-team-logo image">
+        <figure className="match-team-logo image">
           <img
             src={team_image[this.props.team.acronym]}
             alt=""

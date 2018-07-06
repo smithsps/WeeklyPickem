@@ -6,6 +6,7 @@ defmodule WeeklyPickem.Esport.Match do
   alias WeeklyPickem.Repo
   alias WeeklyPickem.Esport.Match
   alias WeeklyPickem.Esport.Team
+  alias WeeklyPickem.Esport.TeamStats
   alias WeeklyPickem.Pickem.Pick
 
   schema "matches" do
@@ -41,17 +42,19 @@ defmodule WeeklyPickem.Esport.Match do
       select: %{match: m, team1: t1, team1_stats: t1s, team2: t2, team2_stats: t2s, pick: p}
 
 
+
+
     match_list = Enum.map(Repo.all(query), fn(q) -> 
       %{
         id: q.match.id,
         time: q.match.time,
         team_one: %{
-          data: %{Map.from_struct(q.team1) | stats: Map.from_struct(q.team1_stats)},
+          data: Map.put(Map.from_struct(q.team1), :stats, Map.from_struct(q.team1_stats)),
           is_winner: not is_nil(q.match.winner) and q.match.winner == q.team1.id,
           is_pick: not is_nil(q.pick) and q.pick.team_id == q.team1.id
         },
         team_two: %{
-          data: %{Map.from_struct(q.team1) | stats: Map.from_struct(q.team2_stats)},
+          data: Map.put(Map.from_struct(q.team2), :stats, Map.from_struct(q.team2_stats)),
           is_winner: not is_nil(q.match.winner) and q.match.winner == q.team2.id,
           is_pick: not is_nil(q.pick) and q.pick.team_id == q.team2.id
         }

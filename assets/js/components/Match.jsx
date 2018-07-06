@@ -99,9 +99,9 @@ class Match extends Component {
                       { isPickingAllowed ?
                         <PickButton match={this.props.match.id} team={this.props.match.teamOne} />
                         :
-                        this.props.match.teamOne.isPick ? <span class="tag is-success">Picked</span> : ""
+                        this.props.match.teamOne.isPick ? <span className="tag is-success">Picked</span> : ""
                       }
-                      {this.props.match.teamOne.isWinner ? <span class="tag is-link">Winner</span> : ""}
+                      {this.props.match.teamOne.isWinner ? <span className="tag is-link">Winner</span> : ""}
                     </div>
                   </div>
                 </div>
@@ -126,9 +126,9 @@ class Match extends Component {
                       { isPickingAllowed ?
                         <PickButton match={this.props.match.id} team={this.props.match.teamTwo} />
                         :
-                        this.props.match.teamTwo.isPick ? <span class="tag is-success">Picked</span> : ""
+                        this.props.match.teamTwo.isPick ? <span className="tag is-success">Picked</span> : ""
                       }
-                      {this.props.match.teamTwo.isWinner ? <span class="tag is-link">Winner</span> : ""}
+                      {this.props.match.teamTwo.isWinner ? <span className="tag is-link">Winner</span> : ""}
                     </div>
                   </div>
                 </div>
@@ -149,6 +149,11 @@ Match.fragments = {
                   id
                   name
                   acronym
+                  stats {
+                      id
+                      wins
+                      total
+                  }
               }
               isPick
               isWinner
@@ -158,6 +163,11 @@ Match.fragments = {
                   id
                   name
                   acronym
+                  stats {
+                      id
+                      wins
+                      total
+                  }
               }
               isPick
               isWinner

@@ -32,12 +32,12 @@ class MatchList extends Component {
 
     render() {
         return (
-            <Query query={ALL_MATCHES}>
+            <Query query={GET_SERIES} variables={{ series_tag: "na-lcs-summer-2018"}}>
                 {({ loading, error, data }) => {
                     if (loading) return <span className="loader"></span>;
                     if (error) return `Error! ${error.message}`;
 
-                    const matches = data.allMatches
+                    const matches = data.getSeries.matches
 
                     // Build match groups of group size
                     const matchTabs = matches
@@ -53,6 +53,17 @@ class MatchList extends Component {
                         })
                         .filter((item) => {return item})
 
+                    // Find currentTab by taking last match in tab and seeing if it is 3 hours old
+                    // const threeHours = 1000 * 60 * 60 * 3;
+                    // for (var tab of MatchTabs) {
+                    //     var lastMatch = tab.matches[tab.matches.length - 1]
+                    //     var timeUntil = (Date.parse(this.props.match.time) - Date.now())
+                    //     if (timeUntil > -threeHours) {
+                    //         currentTab = tab.id
+                    //         break
+                    //     }
+                    // }
+                    
                     return (
                         <div>
                             <div className="matchList tabs is-boxed">
@@ -85,6 +96,11 @@ MatchList.fragments = {
                     id
                     name
                     acronym
+                    stats {
+                        id
+                        wins
+                        total
+                    }
                 }
                 isPick
                 isWinner
@@ -94,6 +110,11 @@ MatchList.fragments = {
                     id
                     name
                     acronym
+                    stats {
+                        id
+                        wins
+                        total
+                    }
                 }
                 isPick
                 isWinner
@@ -102,10 +123,20 @@ MatchList.fragments = {
     `
 } 
 
-const ALL_MATCHES = gql`
-    query allMatches {
-        allMatches {
-            ...MatchListMatch
+const GET_SERIES = gql`
+    query getSeries($series_tag: String!) {
+        getSeries(series_tag: $series_tag) {
+            id
+            name
+            startAt
+            matches {
+                ...MatchListMatch
+            }
+            pickStats {
+                id
+                correct
+                total
+            }
         }
     }
     ${MatchList.fragments.match}

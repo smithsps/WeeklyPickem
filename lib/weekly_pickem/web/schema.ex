@@ -47,14 +47,14 @@ defmodule WeeklyPickem.Web.Schema do
   object :user_pick_stats do
     field :id, non_null(:id)
     field :correct, non_null(:integer)
-    field :total_picks, non_null(:integer)
+    field :total, non_null(:integer)
   end
 
   @desc "Win/Loss Stats for Team"
   object :team_stats do
     field :id, non_null(:id)
     field :wins, non_null(:integer)
-    field :total_games, non_null(:integer)
+    field :total, non_null(:integer)
   end
 
   @desc "User ID Only"
@@ -107,6 +107,7 @@ defmodule WeeklyPickem.Web.Schema do
       resolve &Resolvers.UserResolver.current_user_profile/3  
     end
 
+    @desc "Return a series with all relevant matches"
     field :get_series, :series do
       arg :series_tag, non_null(:string)
       resolve &Resolvers.MatchResolver.get_series/3
