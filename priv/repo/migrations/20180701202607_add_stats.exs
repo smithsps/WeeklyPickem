@@ -51,5 +51,9 @@ defmodule WeeklyPickem.Repo.Migrations.AddStats do
       ) picks
       GROUP BY user_id
     "
+
+    execute "
+      UPDATE teams SET name = 'Team SoloMid' WHERE acronym = 'TSM'
+    "
   end
 end

@@ -22,6 +22,9 @@ $gold: #ffd54f;
 $body-background-color: $dark-grey;
 $navbar-background-color: $dark-grey;
 
+$box-color: #fff;
+$box-background-color: $dark-grey;
+
 
 $primary: $dark-grey;
 $label-color: #222;
@@ -115,7 +118,7 @@ $tabs-link-hover-color: $gold;
   }
 
   @include tablet {
-    width: 256px;
+    width: 350px;
   }
 }
 
@@ -144,5 +147,23 @@ $tabs-link-hover-color: $gold;
     height: 48px;
     margin-left: 3px;
     margin-right: 3px;
+  }
+}
+
+.match-time-long {
+  @include mobile {
+    display: none;
+  }
+}
+
+.match-time-short {
+  @include tablet {
+    display: none;
+  }
+}
+
+.series-title {
+  @include mobile {
+    text-align: center !important;
   }
 }

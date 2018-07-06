@@ -9,7 +9,6 @@ class Pickem extends Component {
       <div>
         <RedirectUser restrict_to_loggedin="true" />
         
-        <p className="title is-3 is-spaced has-text-white">Your Pick'em</p>
         <Series />
       </div>
     );
