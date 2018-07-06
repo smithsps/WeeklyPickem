@@ -25,6 +25,11 @@ $navbar-background-color: $dark-grey;
 $box-color: #fff;
 $box-background-color: $dark-grey;
 
+$table-color: #fff;
+$table-head-cell-color: $gold;
+$table-cell-heading-color: #fff;
+$table-background-color: #1a1a1a;
+
 
 $primary: $dark-grey;
 $label-color: #222;
@@ -99,9 +104,6 @@ $label-color: #222;
 }
 
 
-
-
-
 // Match List
 $tabs-boxed-link-hover-background-color: #1a1a1a;
 $tabs-boxed-link-active-background-color: #1a1a1a;
@@ -166,4 +168,16 @@ $tabs-link-hover-color: $gold;
   @include mobile {
     text-align: center !important;
   }
+}
+
+.leaderboard-table {
+  background-color: #1a1a1a;
+  margin-top: 20px;
+  
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.leaderboard-table .table {
+  max-width: 1000px;
 }
