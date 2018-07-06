@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import MatchList from '../components/MatchList';
+import Series from '../components/Series';
 import RedirectUser from '../components/RedirectUser';
 
 class Pickem extends Component {
@@ -10,7 +10,7 @@ class Pickem extends Component {
         <RedirectUser restrict_to_loggedin="true" />
         
         <p className="title is-3 is-spaced has-text-white">Your Pick'em</p>
-        <MatchList />
+        <Series />
       </div>
     );
   }
