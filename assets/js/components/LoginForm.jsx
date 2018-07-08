@@ -24,7 +24,7 @@ class LoginForm extends Component {
 
             this._saveUserData(refreshToken, accessToken)
 
-            return (<Redirect push to="/pickem" />)
+            return <Redirect push to="/pickem" />
           }
 
           return (
@@ -91,8 +91,6 @@ class LoginForm extends Component {
   }
 
   _saveUserData = (refreshToken, accessToken) => {
-    console.log(refreshToken)
-
     localStorage.setItem("refresh-token", refreshToken)
     localStorage.setItem("access-token", accessToken)
   }
@@ -109,7 +107,7 @@ const LOGIN_MUTATION = gql`
         accessToken {
           token
         }
-        user {
+        currentUser {
           id
           name
           email

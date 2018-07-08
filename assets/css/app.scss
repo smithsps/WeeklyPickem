@@ -30,6 +30,7 @@ $table-head-cell-color: $gold;
 $table-cell-heading-color: #fff;
 $table-background-color: #1a1a1a;
 
+$navbar-burger-color: #1a1a1a;
 
 $primary: $dark-grey;
 $label-color: #222;
@@ -59,6 +60,19 @@ $label-color: #222;
 .navbar-item:hover {
   background-color: #1a1a1a !important;
   color: $gold !important;
+}
+
+.navbar-burger {
+  background-color: $dark-grey !important;
+  border-color: $dark-grey !important;
+}
+
+.navbar-burger .is-active {
+  border-color: $gold !important;
+}
+
+.navbar-burger span {
+  background-color: $gold !important;
 }
 
 // Login Form

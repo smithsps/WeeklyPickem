@@ -15,7 +15,7 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolver do
         {:ok,
           %{refresh_token: RefreshToken.create_refresh_token(user.id),
             access_token: RefreshToken.create_access_token(user.id),
-            user: user
+            current_user: user
           }
         }
       else

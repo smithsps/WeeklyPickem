@@ -24,10 +24,14 @@ const private_pages = [
 
 class Navbar extends Component {
 
-  renderNavLinks(client, loggedIn) {
+  state = {
+    burgerVisible: false
+  }
+
+  renderNavLinks(loggedIn) {
     if (loggedIn) {
       return private_pages.map((page, i) => (
-        <Link className="navbar-item" key={i} to={page.url} onClick={page.onClick}>{page.name}</Link>
+        <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
       ))
     } 
 
@@ -38,7 +42,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <Query query={CURRENT_USER_QUERY}>
+      <Query query={CURRENT_USER_QUERY} errorPolicy="ignore">
         {({ client, loading, data }) => {
           const loggedIn = data && data.currentUser;
 
@@ -60,21 +64,18 @@ class Navbar extends Component {
                   <img src={logo} alt="Weekly League Pick'em" height="28"/>
                 </Link>
                 
-                <button className="button navbar-burger">
-                  {inclusive_pages.map((page, i) => (
-                    <span key={i}>
-                      <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
-                    </span>
-                  ))}
-                  
-                  {this.renderNavLinks(client, loggedIn).map((link, i) => (
-                    <span key={i}>
-                      {link}
-                    </span>
-                  ))}
+                <button 
+                  className={`button navbar-burger ${this.state.burgerVisible ? "is-active" : ""}`} 
+                  aria-label="menu" 
+                  aria-expanded="false"
+                  onClick={() => this.setState({burgerVisible: !this.state.burgerVisible})}
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
                 </button>
               </div>
-              <div className="navbar-menu">
+              <div className={`navbar-menu ${this.state.burgerVisible ? "is-active" : ""}`}>
                 <div className="navbar-start">
                   {inclusive_pages.map((page, i) => (
                       <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
@@ -82,7 +83,7 @@ class Navbar extends Component {
                 </div>
 
                 <div className="navbar-end">
-                  {this.renderNavLinks(client, loggedIn)}
+                  {this.renderNavLinks(loggedIn)}
                 </div>
               </div>
             </nav>

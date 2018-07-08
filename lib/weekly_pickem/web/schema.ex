@@ -57,11 +57,6 @@ defmodule WeeklyPickem.Web.Schema do
     field :total, non_null(:integer)
   end
 
-  @desc "User ID Only"
-  object :user_id do
-    field :id, non_null(:string)
-  end
-
   @desc "Simple user object with id, name and email"
   object :current_user do
     field :id, non_null(:string)
@@ -91,7 +86,7 @@ defmodule WeeklyPickem.Web.Schema do
   object :login do
     field :refresh_token, non_null(:refresh_token)
     field :access_token, non_null(:access_token)
-    field :user, non_null(:current_user)
+    field :current_user, non_null(:current_user)
   end
 
   @desc "Logout user by supplying a corresponding refresh token"
@@ -105,7 +100,7 @@ defmodule WeeklyPickem.Web.Schema do
     end
 
     @desc "Return current user id"
-    field :current_user, :user_id do
+    field :current_user, :current_user do
       resolve &Resolvers.UserResolver.current_user_id/3  
     end
     
