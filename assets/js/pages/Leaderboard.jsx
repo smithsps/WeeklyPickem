@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { graphql, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import RedirectUser from '../components/RedirectUser';
+import Navbar from '../components/Navbar'
 import LeaderboardTable from '../components/LeaderboardTable';
 
 class Leaderboard extends Component {
   render() {
     return (
-      <div>
-        <RedirectUser restrict_to_loggedin="true" />
+      <div className="container">
+        <Navbar privateOnly={true} />
         
         <div>
           <div className="series-title">

@@ -1,71 +1,94 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
 import { graphql, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import logo from 'static/images/logo.png';
 
+
+const inclusive_pages = [
+  {name: "About", url: "/about"}
+]
+
+const public_pages = [
+  {name: "Register", url: "/signup"},
+  {name: "Login", url: "/login"}
+]
+
+const private_pages = [
+  {name: "Leaderboard", url: "/leaderboard"},
+  {name: "Your Pick'em", url: "/pickem"},
+  {name: "Logout", url: "/logout"}
+]
+
 class Navbar extends Component {
+
+  renderNavLinks(client, loggedIn) {
+    if (loggedIn) {
+      return private_pages.map((page, i) => (
+        <Link className="navbar-item" key={i} to={page.url} onClick={page.onClick}>{page.name}</Link>
+      ))
+    } 
+
+    return public_pages.map((page, i) => (
+      <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
+    ))
+  }
+
   render() {
     return (
-      <nav className="navbar" role="navigation" aria-label="main navigation">
-        <div className="navbar-brand">
-          <Link className="navbar-item" to="/">
-            <img src={logo} alt="Weekly League Pick'em" height="28"/>
-          </Link>
+      <Query query={CURRENT_USER_QUERY}>
+        {({ client, loading, data }) => {
+          const loggedIn = data && data.currentUser;
 
-          <button className="button navbar-burger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-        <div className="navbar-menu">
-          <div className="navbar-start">
-            <Link className="navbar-item" to="/about">About</Link>
-          </div>
+          // Redirect not logged-in users to main page
+          if (this.props.privateOnly && !loggedIn) {
+              return <Redirect push to="/" />;
+          } 
 
-          <div className="navbar-end">
-            <Query query={CURRENT_USER_QUERY} fetchPolicy="network-only">
-              {({ client, loading, data }) => {
-                if (loading) {
-                  return (
-                    <div className="navbar-end">
-                      <div className="navbar-item">Loading..</div>
-                    </div>
-                  );
-                }
+          // Redirect logged-in users to pickem main page
+          // Like from the Login and Registration page
+          if (this.props.publicOnly && loggedIn) {
+              return <Redirect push to="/pickem" />;
+          }
+
+          return (
+            <nav className="navbar" role="navigation" aria-label="main navigation">
+              <div className="navbar-brand">
+                <Link className="navbar-item" to="/">
+                  <img src={logo} alt="Weekly League Pick'em" height="28"/>
+                </Link>
                 
-                if (data && data.currentUser.id) {
-                  return (
-                    <div className="navbar-end">
-                      <Link className="navbar-item" to="/leaderboard">Leaderboard</Link>
-                      <Link className="navbar-item" to="/pickem">Your Pick'em</Link>
-                      <a 
-                        className="navbar-item"
-                        onClick={() => {
-                          localStorage.clear()
-                          client.resetStore()
-                          window.location.reload()
-                        }}
-                      >
-                        Log out
-                      </a>
-                    </div>
-                  );
-                }
+                <button className="button navbar-burger">
+                  {inclusive_pages.map((page, i) => (
+                    <span key={i}>
+                      <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
+                    </span>
+                  ))}
+                  
+                  {this.renderNavLinks(client, loggedIn).map((link, i) => (
+                    <span key={i}>
+                      {link}
+                    </span>
+                  ))}
+                </button>
+              </div>
+              <div className="navbar-menu">
+                <div className="navbar-start">
+                  {inclusive_pages.map((page, i) => (
+                      <Link className="navbar-item" key={i} to={page.url}>{page.name}</Link>
+                  ))}
+                </div>
 
-                return (
-                  <div className="navbar-end">
-                    <Link className="navbar-item" to="/signup">Register</Link>
-                    <Link className="navbar-item" to="/login">Login</Link>
-                  </div>
-                );
-              }}
-            </Query>
-          </div>
-        </div>
-      </nav>
+                <div className="navbar-end">
+                  {this.renderNavLinks(client, loggedIn)}
+                </div>
+              </div>
+            </nav>
+          )
+        }}
+      </Query>
     );
   }
 }

@@ -24,10 +24,6 @@ class LoginForm extends Component {
 
             this._saveUserData(refreshToken, accessToken)
 
-            //Hack because the NavBar doesn't update its state naturally
-            //TODO: combine RedirectUser and NavBar
-            window.location.reload()
-
             return (<Redirect push to="/pickem" />)
           }
 

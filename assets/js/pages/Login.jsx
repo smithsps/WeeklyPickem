@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 
+import Navbar from '../components/Navbar'
 import LoginForm from '../components/LoginForm';
-import RedirectUser from '../components/RedirectUser';
 
-class About extends Component {
+class Login extends Component {
   render() {
     return(
-      <div>
-        <RedirectUser restrict_to_loggedout="true" />
+      <div className="container">
+        <Navbar publicOnly={true} />
         <LoginForm />
       </div>
     );
   }
 }
 
-export default About;
+export default Login;

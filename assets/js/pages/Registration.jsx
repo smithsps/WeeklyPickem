@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
+import Navbar from '../components/Navbar'
 import RegisterForm from '../components/RegisterForm'
-import RedirectUser from '../components/RedirectUser';
 
 const Registration = () => (
-  <div>
-    <RedirectUser restrict_to_loggedout="true" />
+  <div className="container">
+    <Navbar publicOnly={true} />
     <RegisterForm />
   </div>
 )

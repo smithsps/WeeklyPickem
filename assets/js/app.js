@@ -39,6 +39,7 @@ import css from 'css/app.scss'
 import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
+import Logout from './pages/Logout'
 import Registration from './pages/Registration'
 import Pickem from './pages/Pickem'
 import Leaderboard from './pages/Leaderboard'
@@ -98,12 +99,11 @@ ReactDOM.render((
   <BrowserRouter>
     <ApolloProvider client={client}>
       <div>
-        <Navbar />
-
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Registration} />
+        <Route path="/logout" component={Logout} />
 
         <Route path="/pickem" component={Pickem} />
         <Route path="/leaderboard" component={Leaderboard} />

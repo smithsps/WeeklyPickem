@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import Navbar from '../components/Navbar'
+
 class About extends Component {
   render() {
     return(
       <div className="container">
+        <Navbar />
         <div>
           <h1 className="title is-3 is-spaced has-text-white">About this Project</h1>
         </div>

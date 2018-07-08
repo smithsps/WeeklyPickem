@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
+import Navbar from '../components/Navbar'
 import Series from '../components/Series';
-import RedirectUser from '../components/RedirectUser';
 
 class Pickem extends Component {
   render() {
     return(
-      <div>
-        <RedirectUser restrict_to_loggedin="true" />
-        
+      <div className="container">
+        <Navbar privateOnly={true} />
         <Series />
       </div>
     );
