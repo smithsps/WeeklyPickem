@@ -25,8 +25,6 @@ defmodule WeeklyPickem.Repo.Migrations.AddSeriesTable do
       add :series_id, references(:series, on_delete: :nothing)
     end
 
-    create index(:matches, [:series])
-
     alter table("teams") do
       remove :league
     end

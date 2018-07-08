@@ -43,7 +43,7 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolverTest do
           accessToken {
             token
           }
-          user {
+          currentUser {
             id
             name
             email
@@ -53,8 +53,8 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolverTest do
       """
 
       result = context.conn |> post("/api", AbsintheHelpers.mutation_skeleton(query))
-      refute json_response(result, 200)["data"]["loginUser"]["user"]["name"] == nil
-      assert json_response(result, 200)["data"]["loginUser"]["user"]["name"] == user.name
+      refute json_response(result, 200)["data"]["loginUser"]["currentUser"]["name"] == nil
+      assert json_response(result, 200)["data"]["loginUser"]["currentUser"]["name"] == user.name
     end
 
     test "failed login attempt", context do
@@ -70,7 +70,7 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolverTest do
           accessToken {
             token
           }
-          user {
+          currentUser {
             id
             name
             email
@@ -97,7 +97,7 @@ defmodule WeeklyPickem.Web.Resolvers.UserResolverTest do
           accessToken {
             token
           }
-          user {
+          currentUser {
             id
             name
             email
