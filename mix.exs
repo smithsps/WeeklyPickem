@@ -4,7 +4,7 @@ defmodule WeeklyPickem.Mixfile do
   def project do
     [
       app: :weekly_pickem,
-      version: "0.3.0",
+      version: "0.3.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,

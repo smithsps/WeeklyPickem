@@ -48,7 +48,7 @@ function ratioToPercentage(a, b) {
 }
 
 function ordering_sort(field, ordering) {
-  if ("percentage") {
+  if (field === "percentage") {
     return (a, b) => {
       const a_percentage = ratioToPercentage(a.stats.correct, a.stats.total);
       const b_percentage = ratioToPercentage(b.stats.correct, b.stats.total);
