@@ -1,0 +1,27 @@
+{
+  "name": "weekly-pickem-client",
+  "version": "0.1.0",
+  "author": "Simon Smith <smithsps@gmail.com>",
+  "license": "UNLICENSED",
+  "keywords": [
+    "BuckleScript"
+  ],
+  "scripts": {
+    "clean": "bsb -clean-world",
+    "build:bsb": "bsb -make-world",
+    "watch:bsb": "bsb -make-world -w",
+    "build:js": "webpack",
+    "watch:js": "webpack --watch",
+    "serve": "webpack-serve",
+    "build": "run-s build:bsb build:js",
+    "watch": "run-p watch:bsb watch:js serve"
+  },
+  "devDependencies": {
+    "bs-platform": "^4.0.5",
+    "copy-webpack-plugin": "^4.5.2",
+    "webpack": "^4.17.2",
+    "webpack-command": "^0.4.1",
+    "webpack-serve": "^2.0.2",
+    "yarn-run-all": "^3.1.1"
+  }
+}
