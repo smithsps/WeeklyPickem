@@ -9,4 +9,7 @@ module.exports = {
             {from: 'static', to: '', force: true},
         ]),
     ],
+    output: {
+        library: "App"
+    }
 };
