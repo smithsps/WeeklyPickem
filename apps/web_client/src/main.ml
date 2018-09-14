@@ -1,10 +1,8 @@
-(* This line opens the Tea.App modules into the current scope for Program access functions and types *)
 open Tea.App
-
-(* This opens the Elm-style virtual-dom functions and types into the current scope *)
 open Tea.Html
 
-(* Let's create a new type here to be our main message type that is passed around *)
+(* [%raw {||}] *) 
+
 type msg =
   | Increment  (* This will be our message to increment the counter *)
   | Decrement  (* This will be our message to decrement the counter *)
@@ -30,12 +28,41 @@ let view_button title msg =
     [ text title
     ]
 
+
+let navbar_item name link =
+  a
+    [class' "navbar-item"; href link]
+    [text name]
+
+let navbar =
+  nav
+    [class' "navbar"]
+    [ div
+        [class' "navbar-brand"]
+        [ a [class' "navbar-item"; href "google.com"] [text "Test"]
+        ; a [class' "navbar-burger"]
+            [ span [] []
+            ; span [] []
+            ; span [] []
+            ]
+        ]
+    ; div
+        [class' "navbar-menu"]
+        [ div [class' "navbar-start"]
+            [ navbar_item "Test" "/"
+            ]
+        ; div [class' "navbar-end"]
+            [
+            ]
+        ]
+    ]
 (* This is the main callback to generate the virtual-dom.
   This returns a virtual-dom node that becomes the view, only changes from call-to-call are set on the real DOM for efficiency, this is also only called once per frame even with many messages sent in within that frame, otherwise does nothing *)
 let view model =
   div
     []
-    [ span
+    [ navbar
+    ; span
         [ style "text-weight" "bold" ]
         [ text (string_of_int model) ]
     ; br []
